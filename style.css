@@ -27,7 +27,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  /* overflow: hidden; */
+  padding: 20px;
 }
 
 .screen {
@@ -171,8 +172,17 @@ body {
   background: var(--warm-beige);
 }
 
-.sound-toggle.muted .sound-icon::after {
+.sound-toggle .sound-icon {
+  display: block;
+}
+
+.sound-toggle.muted .sound-icon {
+  display: none;
+}
+
+.sound-toggle.muted::after {
   content: "🔇";
+  display: block;
 }
 
 .game-board {
