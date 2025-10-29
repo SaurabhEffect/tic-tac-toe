@@ -1,10 +1,10 @@
 # Tic Tac Toe
 
-A minimalist and elegant implementation of the classic Tic Tac Toe game with a luxury-inspired design aesthetic.
+A minimalist and elegant implementation of the classic Tic Tac Toe game with a luxury-inspired design aesthetic, built with modular vanilla JavaScript.
 
 ## 🎯 Overview
 
-This project is a sophisticated take on the classic Tic Tac Toe game, featuring a luxury-inspired minimal design with cream, beige, charcoal, and gold color palette. Built with vanilla JavaScript, it offers smooth animations, responsive design, and an elegant user experience.
+A sophisticated take on the classic Tic Tac Toe game, featuring a luxury-inspired minimal design with cream, beige, charcoal, and gold color palette. Built with vanilla JavaScript using ES6 modules, it offers smooth animations, responsive design, clean code architecture, and an elegant user experience.
 
 ## ✨ Features
 
@@ -16,12 +16,13 @@ This project is a sophisticated take on the classic Tic Tac Toe game, featuring 
 - **Win Detection**: Automatic winner detection with visual highlighting
 - **Draw Detection**: Identifies tie games automatically
 - **Play Again**: Quick reset functionality
+- **Modular Architecture**: Clean, maintainable code using ES6 modules
 
 ## 🛠️ Technologies Used
 
 - **HTML5**: Semantic markup structure
 - **CSS3**: Modern styling with Grid, Flexbox, and animations
-- **JavaScript (ES6+)**: Game logic and interactivity
+- **JavaScript (ES6+)**: Modular game logic with ES6 modules
 - **Web Audio API**: Dynamic sound generation
 
 ## 📦 Installation
@@ -30,13 +31,25 @@ This project is a sophisticated take on the classic Tic Tac Toe game, featuring 
 2. **File Structure**:
    ```
    tic-tac-toe/
-   ├── index.html
-   ├── style.css
-   ├── script.js
-   └── README.md
+   ├── index.html          # Main HTML file
+   ├── style.css           # Styling and animations
+   ├── script.js           # Main application controller
+   ├── config.js           # Game constants and configuration
+   ├── gameState.js        # Game state management
+   ├── gameLogic.js        # Core game logic (win detection)
+   ├── domElements.js      # DOM element references
+   ├── soundManager.js     # Audio management
+   ├── uiController.js     # UI updates and rendering
+   └── README.md           # Documentation
    ```
-3. **Open** `index.html` in any modern web browser
-4. **No build process** or dependencies required
+3. **Run the Game**:
+   - Open `index.html` in any modern web browser
+   - **Note**: Due to ES6 modules, you need to run from a local server or use a browser that supports file:// protocol modules
+   - **Recommended**: Use Live Server extension in VS Code or Python's simple HTTP server:
+     ```bash
+     python -m http.server 8000
+     ```
+   - Then visit: `http://localhost:8000`
 
 ## 🎮 Usage
 
@@ -44,19 +57,83 @@ This project is a sophisticated take on the classic Tic Tac Toe game, featuring 
 2. Player X (charcoal) goes first
 3. Click any empty cell to place your mark
 4. Players alternate turns automatically
-5. Get three marks in a row to win
+5. Get three marks in a row to win (horizontal, vertical, or diagonal)
 6. Click **"Play Again"** to start fresh
 7. Toggle sound effects with the speaker icon
 
-## 🎯 Game Rules
+## 📁 Project Structure
 
-- Played on a 3×3 grid
-- Player X uses charcoal marks
-- Player O uses gold marks
-- First to get 3 in a row wins (horizontal, vertical, or diagonal)
-- All 9 cells filled without winner = draw
+### Core Files
 
-## 🎨 Customization
+#### **index.html**
+
+Main HTML structure with semantic markup and ES6 module imports.
+
+#### **style.css**
+
+Complete styling with CSS custom properties, animations, and responsive design.
+
+#### **script.js**
+
+Main application controller that coordinates all modules. Handles initialization, event listeners, and game flow.
+
+### JavaScript Modules
+
+#### **config.js**
+
+Contains all game constants and configuration:
+
+- Game board settings
+- Winning combinations
+- Sound configuration
+- CSS class names
+- Game messages
+
+#### **gameState.js**
+
+Centralized state management with GameState class:
+
+- Board state tracking
+- Current player management
+- Game active status
+- Sound preferences
+- State manipulation methods
+
+#### **gameLogic.js**
+
+Core game logic:
+
+- Win condition checking
+- Draw detection
+- Move validation
+
+#### **domElements.js**
+
+DOM element management:
+
+- Element selection and caching
+- Element validation
+- Centralized DOM references
+
+#### **soundManager.js**
+
+Audio management using Web Audio API:
+
+- Sound playback functions
+- Volume control
+- Different sound effects (move, win, draw, click)
+
+#### **uiController.js**
+
+UI updates and rendering:
+
+- Display updates
+- Cell rendering
+- Screen transitions
+- Status messages
+- Visual feedback
+
+## 🔧 Customization
 
 ### Colors
 
@@ -73,7 +150,7 @@ Edit CSS variables in `style.css`:
 
 ### Cell Size
 
-Adjust dimensions:
+Adjust dimensions in `style.css`:
 
 ```css
 :root {
@@ -84,35 +161,133 @@ Adjust dimensions:
 
 ### Sound Effects
 
-Modify frequencies in `script.js`:
+Modify frequencies in `config.js`:
 
 ```javascript
-const sounds = {
-  move: () => playSound(600, 0.08, "sine"),
-  win: () => playSound(523, 0.12, "sine"),
+export const SOUND_CONFIG = {
+  FREQUENCIES: {
+    MOVE: 600,
+    WIN_NOTE_1: 523,
+    // ...
+  },
+};
+```
+
+### Game Configuration
+
+Adjust game settings in `config.js`:
+
+```javascript
+export const GAME_CONFIG = {
+  BOARD_SIZE: 9,
+  GRID_DIMENSIONS: 3,
+  INITIAL_PLAYER: "X",
 };
 ```
 
 ## 🌐 Browser Support
 
-- ✅ Chrome/Edge (latest)
-- ✅ Firefox (latest)
-- ✅ Safari (latest)
-- ✅ Opera (latest)
-- ✅ Mobile browsers
+- ✅ Chrome/Edge (latest) - Full support
+- ✅ Firefox (latest) - Full support
+- ✅ Safari (latest) - Full support
+- ✅ Opera (latest) - Full support
+- ✅ Mobile browsers - Requires local server
+
+**Note**: ES6 modules require a server environment or modern browser support for file:// protocol.
+
+## 🏗️ Architecture
+
+### Modular Design Pattern
+
+The application follows a modular architecture with clear separation of concerns:
+
+```
+┌─────────────────┐
+│   script.js     │  ← Main Controller
+│  (Entry Point)  │
+└────────┬────────┘
+         │
+    ┌────┴────┐
+    │         │
+    ▼         ▼
+┌─────────────────────────────────┐
+│        Module Layer             │
+├─────────────────────────────────┤
+│ config.js        │ Constants    │
+│ gameState.js     │ State Mgmt   │
+│ gameLogic.js     │ Game Rules   │
+│ domElements.js   │ DOM Cache    │
+│ soundManager.js  │ Audio        │
+│ uiController.js  │ UI Updates   │
+└─────────────────────────────────┘
+```
+
+### Data Flow
+
+1. **User Interaction** → DOM Event
+2. **script.js** → Receives event
+3. **gameState.js** → Updates state
+4. **gameLogic.js** → Validates and checks results
+5. **uiController.js** → Updates UI
+6. **soundManager.js** → Plays audio feedback
+
+## 🧪 Development
+
+### Adding New Features
+
+1. **Add constants** to `config.js`
+2. **Update state** in `gameState.js` if needed
+3. **Add logic** to `gameLogic.js` for rules
+4. **Update UI** in `uiController.js` for display
+5. **Wire it up** in `script.js`
+
+### Code Style
+
+- Use JSDoc comments for all functions
+- Follow ES6+ standards
+- Maintain single responsibility per module
+- Keep functions small and focused
+- Use descriptive variable names
+
+## 📝 Version History
+
+| Version | Features                                        | Date     |
+| ------- | ----------------------------------------------- | -------- |
+| 1.0     | Initial release - Basic 2-player game           | Oct 2025 |
+| 1.1     | Modular refactoring, ES6 modules, documentation | Oct 2025 |
+
+## 🔮 Future Enhancements
+
+Planned features for upcoming versions:
+
+- LocalStorage integration for preferences
+- Score tracking and statistics
+- AI opponent (Easy/Medium/Hard)
+- Multiple themes
+- Undo/Hint features
+- PWA support
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
+3. Follow the existing code structure
+4. Add appropriate documentation
+5. Test thoroughly
+6. Submit a pull request
 
-## 📝 License
+## 📄 License
 
-This project is open source and available for educational purposes.
+**Personal Project - Free to Use**
+
+- ✅ Personal use
+- ✅ Educational purposes
+- ✅ Modification allowed
+- ❌ Commercial redistribution
+- ❌ Remove attribution
 
 ---
 
-**Made with ❤️ by Saurabh Chauhan**
+**Made with ❤️ by Saurabh Chauhan for luxury game experiences**
+
+_Built with vanilla JavaScript - No frameworks, no dependencies, just clean code._
