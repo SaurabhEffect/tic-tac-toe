@@ -2,6 +2,15 @@
 // Handles initialization, event listeners, and game flow.
 // Tic Tac Toe Game - v1.1
 
+import {
+  loadSoundPreference,
+  saveSoundPreference,
+  loadGameState,
+  saveGameState,
+  hasSavedGameState,
+  clearGameState,
+} from "./storage.js";
+
 import { CSS_CLASSES, MESSAGES } from "./config.js";
 import { gameState } from "./gameState.js";
 import { getDOMElements, validateDOMElements } from "./domElements.js";
@@ -47,6 +56,7 @@ function makeMove(cell, index) {
   gameState.makeMove(index);
   updateCellUI(cell, index);
   sounds.move();
+  saveGameState(gameState);
 }
 
 function handleGameEnd(result) {
@@ -59,6 +69,7 @@ function handleGameEnd(result) {
     sounds.draw();
   }
   showPlayAgainButton(elements);
+  saveGameState(gameState);
 }
 
 function resetGame() {
@@ -67,6 +78,7 @@ function resetGame() {
   clearStatus(elements);
   hidePlayAgainButton(elements);
   updateCurrentPlayerDisplay(elements);
+  clearGameState();
 }
 
 function setupEventListeners() {
@@ -80,6 +92,7 @@ function setupEventListeners() {
     gameState.toggleSound();
     toggleSoundButtonUI(elements.soundToggle);
     sounds.click();
+    saveSoundPreference(gameState.soundEnabled);
   });
 
   elements.playAgainBtn.addEventListener("click", () => {
@@ -97,6 +110,16 @@ function initializeApp() {
     elements = getDOMElements();
     validateDOMElements(elements);
     setupEventListeners();
+    const savedSoundEnabled = loadSoundPreference();
+    gameState.soundEnabled = savedSoundEnabled;
+    if (!savedSoundEnabled) {
+      elements.soundToggle.classList.add("muted");
+    }
+
+    window.addEventListener("beforeunload", () => {
+      saveGameState(gameState);
+      saveSoundPreference(gameState.soundEnabled);
+    });
     console.log(MESSAGES.LOAD_SUCCESS);
   } catch (error) {
     console.error("Failed to initialize game:", error);
