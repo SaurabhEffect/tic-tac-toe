@@ -55,5 +55,36 @@ class GameState {
     this.currentPlayer = GAME_CONFIG.INITIAL_PLAYER;
     this.isGameActive = true;
   }
+
+  saveToStorage() {
+    const stateToSave = {
+      board: this.board,
+      currentPlayer: this.currentPlayer,
+      isGameActive: this.isGameActive,
+      soundEnabled: this.soundEnabled,
+    };
+    localStorage.setItem("tictactoe_gameState", JSON.stringify(stateToSave));
+  }
+
+  loadFromStorage() {
+    const saved = localStorage.getItem("tictactoe_gameState");
+    if (saved) {
+      const state = JSON.parse(saved);
+      this.board = state.board;
+      this.currentPlayer = state.currentPlayer;
+      this.isGameActive = state.isGameActive;
+      this.soundEnabled = state.soundEnabled;
+      return true;
+    }
+    return false;
+  }
+
+  hasSavedState() {
+    return localStorage.getItem("tictactoe_gameState") !== null;
+  }
+
+  clearSavedState() {
+    localStorage.removeItem("tictactoe_gameState");
+  }
 }
 export const gameState = new GameState();
