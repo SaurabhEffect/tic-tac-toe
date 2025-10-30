@@ -1,12 +1,16 @@
-# Tic Tac Toe
+# Tic Tac Toe - v1.2
 
-A minimalist and elegant implementation of the classic Tic Tac Toe game with a luxury-inspired design aesthetic, built with modular vanilla JavaScript.
+A minimalist and elegant implementation of the classic Tic Tac Toe game with a luxury-inspired design aesthetic, built with modular vanilla JavaScript and persistent storage.
 
 ## 🎯 Overview
 
-A sophisticated take on the classic Tic Tac Toe game, featuring a luxury-inspired minimal design with cream, beige, charcoal, and gold color palette. Built with vanilla JavaScript using ES6 modules, it offers smooth animations, responsive design, clean code architecture, and an elegant user experience.
+A sophisticated take on the classic Tic Tac Toe game, featuring a luxury-inspired minimal design with cream, beige, charcoal, and gold color palette. Built with vanilla JavaScript using ES6 modules, it offers smooth animations, responsive design, clean code architecture, and persistent data storage using localStorage.
+
+**Version 1.2 Features**: LocalStorage integration for preferences and game state persistence.
 
 ## ✨ Features
+
+### Core Features
 
 - **Luxury Minimal Design**: Clean interface inspired by high-end brand aesthetics
 - **Two Player Mode**: Play against a friend on the same device
@@ -18,12 +22,21 @@ A sophisticated take on the classic Tic Tac Toe game, featuring a luxury-inspire
 - **Play Again**: Quick reset functionality
 - **Modular Architecture**: Clean, maintainable code using ES6 modules
 
+### v1.2 - New Features
+
+- **LocalStorage Persistence**: Game state automatically saved
+- **Sound Preference Memory**: Sound toggle state persists across sessions
+- **Auto-save on Each Move**: Game progress is continuously saved
+- **Browser Close Protection**: Game state preserved even after closing browser
+- **Preference Auto-load**: Sound and preferences restored on startup
+
 ## 🛠️ Technologies Used
 
 - **HTML5**: Semantic markup structure
 - **CSS3**: Modern styling with Grid, Flexbox, and animations
 - **JavaScript (ES6+)**: Modular game logic with ES6 modules
 - **Web Audio API**: Dynamic sound generation
+- **LocalStorage API**: Persistent data storage
 
 ## 📦 Installation
 
@@ -40,6 +53,7 @@ A sophisticated take on the classic Tic Tac Toe game, featuring a luxury-inspire
    ├── domElements.js      # DOM element references
    ├── soundManager.js     # Audio management
    ├── uiController.js     # UI updates and rendering
+   ├── storage.js          # LocalStorage operations (v1.2)
    └── README.md           # Documentation
    ```
 3. **Run the Game**:
@@ -60,6 +74,7 @@ A sophisticated take on the classic Tic Tac Toe game, featuring a luxury-inspire
 5. Get three marks in a row to win (horizontal, vertical, or diagonal)
 6. Click **"Play Again"** to start fresh
 7. Toggle sound effects with the speaker icon
+8. Your preferences and unfinished games are automatically saved!
 
 ## 📁 Project Structure
 
@@ -67,15 +82,15 @@ A sophisticated take on the classic Tic Tac Toe game, featuring a luxury-inspire
 
 #### **index.html**
 
-Main HTML structure with semantic markup and ES6 module imports.
+Main HTML structure with semantic markup and ES6 module imports. Includes footer with GitHub link.
 
 #### **style.css**
 
-Complete styling with CSS custom properties, animations, and responsive design.
+Complete styling with CSS custom properties, animations, and responsive design. Includes luxury color palette and elegant footer styling.
 
 #### **script.js**
 
-Main application controller that coordinates all modules. Handles initialization, event listeners, and game flow.
+Main application controller that coordinates all modules. Handles initialization, event listeners, and game flow. Manages localStorage operations for persistence.
 
 ### JavaScript Modules
 
@@ -132,6 +147,54 @@ UI updates and rendering:
 - Screen transitions
 - Status messages
 - Visual feedback
+
+#### **storage.js** (NEW - v1.2)
+
+LocalStorage management:
+
+- Save/load game state
+- Save/load player preferences
+- Sound preference persistence
+- Game state auto-save on close
+
+## 🔄 LocalStorage Features (v1.2)
+
+### Saved Data
+
+The game automatically saves:
+
+- **Game State**: Board positions, current player, game status
+- **Sound Preference**: Mute/unmute status
+- **Timestamp**: When game was last saved
+
+### Persistence Behavior
+
+- ✅ Preferences persist across browser sessions
+- ✅ Game state auto-saves after each move
+- ✅ Game state saved when game ends
+- ✅ State preserved even if browser is closed without warning
+- ✅ Sound toggle state restored on startup
+- ✅ Unfinished games can be resumed
+
+### Data Storage Locations
+
+```javascript
+localStorage.tictactoe_gameState; // Game board and state
+localStorage.tictactoe_soundEnabled; // Sound preference
+```
+
+## 🧪 Testing LocalStorage
+
+Open browser console (F12) and test:
+
+```javascript
+// View all saved data
+console.log(localStorage.getItem("tictactoe_gameState"));
+console.log(localStorage.getItem("tictactoe_soundEnabled"));
+
+// Clear all data (if needed)
+localStorage.clear();
+```
 
 ## 🔧 Customization
 
@@ -219,6 +282,7 @@ The application follows a modular architecture with clear separation of concerns
 │ domElements.js   │ DOM Cache    │
 │ soundManager.js  │ Audio        │
 │ uiController.js  │ UI Updates   │
+│ storage.js       │ Persistence  │
 └─────────────────────────────────┘
 ```
 
@@ -230,6 +294,7 @@ The application follows a modular architecture with clear separation of concerns
 4. **gameLogic.js** → Validates and checks results
 5. **uiController.js** → Updates UI
 6. **soundManager.js** → Plays audio feedback
+7. **storage.js** → Persists to localStorage
 
 ## 🧪 Development
 
@@ -239,7 +304,8 @@ The application follows a modular architecture with clear separation of concerns
 2. **Update state** in `gameState.js` if needed
 3. **Add logic** to `gameLogic.js` for rules
 4. **Update UI** in `uiController.js` for display
-5. **Wire it up** in `script.js`
+5. **Handle storage** in `storage.js` if data persistence needed
+6. **Wire it up** in `script.js`
 
 ### Code Style
 
@@ -251,10 +317,11 @@ The application follows a modular architecture with clear separation of concerns
 
 ## 📝 Version History
 
-| Version | Features                                        | Date     |
-| ------- | ----------------------------------------------- | -------- |
-| 1.0     | Initial release - Basic 2-player game           | Oct 2025 |
-| 1.1     | Modular refactoring, ES6 modules, documentation | Oct 2025 |
+| Version | Features                                                 | Date     |
+| ------- | -------------------------------------------------------- | -------- |
+| 1.0     | Initial release - Basic 2-player game                    | Oct 2025 |
+| 1.1     | Modular refactoring, ES6 modules, documentation          | Oct 2025 |
+| 1.2     | LocalStorage integration, state persistence, preferences | Oct 2025 |
 
 ## 🔮 Future Enhancements
 
@@ -290,4 +357,4 @@ Planned features for upcoming versions:
 
 **Made with ❤️ by Saurabh Chauhan for luxury game experiences**
 
-_Built with vanilla JavaScript - No frameworks, no dependencies, just clean code._
+_Built with vanilla JavaScript - No frameworks, no dependencies, just clean code and persistent storage._
