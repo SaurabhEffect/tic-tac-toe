@@ -9,6 +9,12 @@ export function getDOMElements() {
     soundToggle: document.getElementById("soundToggle"),
     gameBoard: document.getElementById("gameBoard"),
     cells: document.querySelectorAll(".cell"),
+    playerModal: document.getElementById("playerModal"),
+    playerXNameInput: document.getElementById("playerXName"),
+    playerONameInput: document.getElementById("playerOName"),
+    startGameBtn: document.getElementById("startGameBtn"),
+    skipNamesBtn: document.getElementById("skipNamesBtn"),
+
     currentPlayerDisplay: document.getElementById("currentPlayerDisplay"),
     gameStatus: document.getElementById("gameStatus"),
   };

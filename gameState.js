@@ -8,6 +8,8 @@ class GameState {
     this.currentPlayer = GAME_CONFIG.INITIAL_PLAYER;
     this.isGameActive = false;
     this.soundEnabled = true;
+    this.playerNameX = "Player X";
+    this.playerNameO = "Player O";
   }
 
   resetBoard() {

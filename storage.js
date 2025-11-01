@@ -28,14 +28,25 @@ export function saveGameState(gameStateObj) {
     currentPlayer: gameStateObj.currentPlayer,
     isGameActive: gameStateObj.isGameActive,
     soundEnabled: gameStateObj.soundEnabled,
+    playerNameX: gameStateObj.playerNameX,
+    playerNameO: gameStateObj.playerNameO,
     timestamp: new Date().getTime(),
   };
-  localStorage.setItem(STORAGE_KEYS.GAME_STATE, JSON.stringify(stateToSave));
+
+  try {
+    localStorage.setItem(STORAGE_KEYS.GAME_STATE, JSON.stringify(stateToSave));
+  } catch (e) {
+    console.warn("Failed to save game state to localStorage:", e);
+  }
 }
 
 export function loadGameState() {
   const saved = localStorage.getItem(STORAGE_KEYS.GAME_STATE);
-  return saved ? JSON.parse(saved) : null;
+  if (saved) {
+    const state = JSON.parse(saved);
+    return state;
+  }
+  return null;
 }
 
 export function clearGameState() {

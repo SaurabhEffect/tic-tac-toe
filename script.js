@@ -1,6 +1,13 @@
 // Main Application Entry Point
 // Handles initialization, event listeners, and game flow.
-// Tic Tac Toe Game - v1.1
+// Tic Tac Toe Game - v1.3
+
+import {
+  getPlayerNames,
+  savePlayerNames,
+  getPlayerDisplayName,
+  isValidPlayerName,
+} from "./playerManager.js";
 
 import {
   loadSoundPreference,
@@ -27,12 +34,19 @@ import {
   resetCellsUI,
   clearStatus,
   toggleSoundButtonUI,
+  setPlayerNameInputs,
+  showPlayerModal,
+  hidePlayerModal,
 } from "./uiController.js";
 
 let elements;
 function initGame() {
   gameState.startGame();
-  updateCurrentPlayerDisplay(elements);
+  const displayName =
+    gameState.currentPlayer === "X"
+      ? gameState.playerNameX
+      : gameState.playerNameO;
+  elements.currentPlayerDisplay.textContent = displayName;
 }
 
 function handleCellClick(event) {
@@ -48,7 +62,11 @@ function handleCellClick(event) {
     handleGameEnd(result);
   } else {
     gameState.switchPlayer();
-    updateCurrentPlayerDisplay(elements);
+    const displayName =
+      gameState.currentPlayer === "X"
+        ? gameState.playerNameX
+        : gameState.playerNameO;
+    elements.currentPlayerDisplay.textContent = displayName;
   }
 }
 
@@ -62,7 +80,14 @@ function makeMove(cell, index) {
 function handleGameEnd(result) {
   gameState.endGame();
   if (result.type === "win") {
-    displayWinResult(result, elements);
+    const winnerName =
+      result.player === "X" ? gameState.playerNameX : gameState.playerNameO;
+
+    result.combination.forEach((index) => {
+      elements.cells[index].classList.add("winner");
+    });
+
+    elements.gameStatus.textContent = `${winnerName} Wins!`;
     sounds.win();
   } else {
     displayDrawResult(elements);
@@ -84,8 +109,7 @@ function resetGame() {
 function setupEventListeners() {
   elements.startBtn.addEventListener("click", () => {
     sounds.click();
-    switchScreen(elements.startScreen, elements.gameScreen);
-    initGame();
+    showPlayerModal(elements);
   });
 
   elements.soundToggle.addEventListener("click", () => {
@@ -103,18 +127,59 @@ function setupEventListeners() {
   elements.cells.forEach((cell) => {
     cell.addEventListener("click", handleCellClick);
   });
+
+  elements.startGameBtn.addEventListener("click", () => {
+    const nameX = elements.playerXNameInput.value.trim();
+    const nameO = elements.playerONameInput.value.trim();
+
+    if (!nameX && !nameO) {
+      gameState.playerNameX = "Player X";
+      gameState.playerNameO = "Player O";
+      savePlayerNames("Player X", "Player O");
+    } else if (!nameX || !nameO) {
+      alert("Please enter both player names or skip to use defaults.");
+      return;
+    } else if (!isValidPlayerName(nameX) || !isValidPlayerName(nameO)) {
+      alert("Names must be 1-20 characters.");
+      return;
+    } else {
+      gameState.playerNameX = nameX;
+      gameState.playerNameO = nameO;
+      savePlayerNames(nameX, nameO);
+    }
+
+    sounds.click();
+    hidePlayerModal(elements);
+    switchScreen(elements.startScreen, elements.gameScreen);
+    initGame();
+  });
+
+  elements.skipNamesBtn.addEventListener("click", () => {
+    sounds.click();
+    gameState.playerNameX = "Player X";
+    gameState.playerNameO = "Player O";
+    hidePlayerModal(elements);
+    switchScreen(elements.startScreen, elements.gameScreen);
+    initGame();
+  });
 }
 
 function initializeApp() {
   try {
     elements = getDOMElements();
     validateDOMElements(elements);
+
     setupEventListeners();
     const savedSoundEnabled = loadSoundPreference();
     gameState.soundEnabled = savedSoundEnabled;
     if (!savedSoundEnabled) {
       elements.soundToggle.classList.add("muted");
     }
+
+    const savedNames = getPlayerNames();
+    gameState.playerNameX = savedNames.X;
+    gameState.playerNameO = savedNames.O;
+    setPlayerNameInputs(elements, savedNames);
 
     window.addEventListener("beforeunload", () => {
       saveGameState(gameState);

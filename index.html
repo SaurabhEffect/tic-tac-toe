@@ -13,6 +13,42 @@
         <p class="game-subtitle">Classic Strategy Game</p>
         <button id="startBtn" class="btn-primary">Start Game</button>
       </div>
+      <div id="playerModal" class="player-modal hidden">
+        <div class="modal-content">
+          <h2 class="modal-title">Enter Player Names</h2>
+
+          <div class="player-input-group">
+            <label for="playerXName" class="player-label">
+              <span class="player-x-label">Player X</span>
+            </label>
+            <input
+              type="text"
+              id="playerXName"
+              class="player-input"
+              placeholder="Player X"
+              maxlength="20"
+            />
+          </div>
+
+          <div class="player-input-group">
+            <label for="playerOName" class="player-label">
+              <span class="player-o-label">Player O</span>
+            </label>
+            <input
+              type="text"
+              id="playerOName"
+              class="player-input"
+              placeholder="Player O"
+              maxlength="20"
+            />
+          </div>
+
+          <div class="modal-buttons">
+            <button id="startGameBtn" class="btn-primary">Start</button>
+            <button id="skipNamesBtn" class="btn-secondary">Skip</button>
+          </div>
+        </div>
+      </div>
     </div>
     <div id="gameScreen" class="screen">
       <div class="game-container">

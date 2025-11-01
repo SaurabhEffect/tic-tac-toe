@@ -49,3 +49,30 @@ export function displayDrawResult(elements) {
 export function toggleSoundButtonUI(soundToggle) {
   soundToggle.classList.toggle(CSS_CLASSES.MUTED);
 }
+export function updateCurrentPlayerDisplayWithName(elements, gameState) {
+  const displayName =
+    gameState.currentPlayer === "X"
+      ? gameState.playerNameX
+      : gameState.playerNameO;
+  elements.currentPlayerDisplay.textContent = displayName;
+}
+
+export function showPlayerModal(elements) {
+  elements.playerModal.classList.remove("hidden");
+  elements.playerModal.classList.add("active");
+}
+
+export function hidePlayerModal(elements) {
+  elements.playerModal.classList.remove("active");
+  elements.playerModal.classList.add("hidden");
+}
+
+export function clearPlayerNameInputs(elements) {
+  elements.playerXNameInput.value = "";
+  elements.playerONameInput.value = "";
+}
+
+export function setPlayerNameInputs(elements, names) {
+  elements.playerXNameInput.value = names.X;
+  elements.playerONameInput.value = names.O;
+}

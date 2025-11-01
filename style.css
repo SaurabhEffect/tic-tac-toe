@@ -384,3 +384,128 @@ body {
   transform: translateY(-3px);
   box-shadow: 0 4px 12px rgba(201, 169, 97, 0.2);
 }
+
+.player-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.player-modal.active {
+  display: flex;
+}
+
+.player-modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: var(--cream);
+  padding: 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  max-width: 400px;
+  width: 90%;
+  animation: slideUp 0.4s ease-out;
+  border: 1px solid var(--border-light);
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  color: var(--charcoal);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.player-input-group {
+  margin-bottom: 1.5rem;
+}
+
+.player-label {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.player-x-label {
+  color: var(--charcoal);
+}
+
+.player-o-label {
+  color: var(--gold);
+}
+
+.player-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--border-light);
+  background: var(--beige);
+  color: var(--text-dark);
+  font-family: "Georgia", "Times New Roman", serif;
+  transition: all 0.3s ease;
+}
+
+.player-input:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: var(--cream);
+  box-shadow: 0 0 0 2px rgba(201, 169, 97, 0.1);
+}
+
+.player-input::placeholder {
+  color: var(--text-light);
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.modal-buttons .btn-primary,
+.modal-buttons .btn-secondary {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+
+  .modal-title {
+    font-size: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .player-input-group {
+    margin-bottom: 1rem;
+  }
+
+  .player-input {
+    padding: 0.7rem 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+  }
+}

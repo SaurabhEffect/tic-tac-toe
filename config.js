@@ -65,7 +65,7 @@ export const CSS_CLASSES = {
 };
 
 export const MESSAGES = {
-  WIN: (player) => `Player ${player} Wins!`,
+  WIN: (playerName) => `${playerName} Wins!`,
   DRAW: "It's a Draw!",
   LOAD_SUCCESS: "Luxury Tic Tac Toe loaded successfully!",
 };
