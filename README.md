@@ -1,12 +1,12 @@
-# Tic Tac Toe
+# Tic Tac Toe - v1.3
 
-A minimalist and elegant implementation of the classic Tic Tac Toe game with a luxury-inspired design aesthetic, built with modular vanilla JavaScript and persistent storage.
+A minimalist and elegant implementation of the classic Tic Tac Toe game with a luxury-inspired design aesthetic, built with modular vanilla JavaScript and custom player names.
 
 ## 🎯 Overview
 
-A sophisticated take on the classic Tic Tac Toe game, featuring a luxury-inspired minimal design with cream, beige, charcoal, and gold color palette. Built with vanilla JavaScript using ES6 modules, it offers smooth animations, responsive design, clean code architecture, and persistent data storage using localStorage.
+A sophisticated take on the classic Tic Tac Toe game, featuring a luxury-inspired minimal design with cream, beige, charcoal, and gold color palette. Built with vanilla JavaScript using ES6 modules, it offers smooth animations, responsive design, clean code architecture, and persistent data storage, and personalized player customization.
 
-**Version 1.2 Features**: LocalStorage integration for preferences and game state persistence.
+**Version 1.3 Features**: Player name customization with persistent storage and display in game UI.
 
 ## ✨ Features
 
@@ -22,13 +22,24 @@ A sophisticated take on the classic Tic Tac Toe game, featuring a luxury-inspire
 - **Play Again**: Quick reset functionality
 - **Modular Architecture**: Clean, maintainable code using ES6 modules
 
-### v1.2 - New Features
+### v1.2 Features - LocalStorage Persistence
 
 - **LocalStorage Persistence**: Game state automatically saved
 - **Sound Preference Memory**: Sound toggle state persists across sessions
 - **Auto-save on Each Move**: Game progress is continuously saved
 - **Browser Close Protection**: Game state preserved even after closing browser
 - **Preference Auto-load**: Sound and preferences restored on startup
+
+### v1.3 - NEW: Player Customization
+
+- **Custom Player Names**: Enter personalized names for both players
+- **Name Input Modal**: Beautiful modal for easy name entry
+- **Display Custom Names**: Names shown during gameplay in current player display
+- **Win Messages with Names**: Victory messages display custom player names
+- **Names in Status Bar**: Shows "Alice" instead of "Player X" during game
+- **Persistent Names**: Custom names saved to localStorage
+- **Skip Option**: Use default names if preferred
+- **Default Fallback**: "Player X" and "Player O" as defaults
 
 ## 🛠️ Technologies Used
 
@@ -53,7 +64,8 @@ A sophisticated take on the classic Tic Tac Toe game, featuring a luxury-inspire
    ├── domElements.js      # DOM element references
    ├── soundManager.js     # Audio management
    ├── uiController.js     # UI updates and rendering
-   ├── storage.js          # LocalStorage operations (v1.2)
+   ├── storage.js          # LocalStorage operations
+   ├── playerManager.js    # Player name management (v1.3)
    └── README.md           # Documentation
    ```
 3. **Run the Game**:
@@ -68,13 +80,18 @@ A sophisticated take on the classic Tic Tac Toe game, featuring a luxury-inspire
 ## 🎮 Usage
 
 1. Click **"Start Game"** on the welcome screen
-2. Player X (charcoal) goes first
-3. Click any empty cell to place your mark
-4. Players alternate turns automatically
-5. Get three marks in a row to win (horizontal, vertical, or diagonal)
-6. Click **"Play Again"** to start fresh
-7. Toggle sound effects with the speaker icon
-8. Your preferences and unfinished games are automatically saved!
+2. **Enter Player Names** (NEW in v1.3):
+   - Type custom names for both players (e.g., "Alice" and "Bob")
+   - Or click "Skip" to use default names
+3. **Play the Game**:
+   - Players take turns clicking cells
+   - Names display at the top showing whose turn it is
+4. **Win Condition**:
+   - Get three marks in a row (horizontal, vertical, or diagonal)
+   - Victory message displays with the winner's custom name
+5. Click **"Play Again"** to start fresh game
+6. Toggle sound effects with the speaker icon
+7. All names and preferences automatically saved!
 
 ## 📁 Project Structure
 
@@ -148,7 +165,7 @@ UI updates and rendering:
 - Status messages
 - Visual feedback
 
-#### **storage.js** (NEW - v1.2)
+#### **storage.js**
 
 LocalStorage management:
 
@@ -157,40 +174,78 @@ LocalStorage management:
 - Sound preference persistence
 - Game state auto-save on close
 
-## 🔄 LocalStorage Features (v1.2)
+#### **playerManager.js** (NEW - v1.3)
 
-### Saved Data
+Player name management:
+
+- Get/save custom player names
+- Default name fallback
+- Name validation (1-20 characters)
+- Names persistence to localStorage
+- Display name retrieval
+
+## 👥 Player Customization Features (v1.3)
+
+### Name Entry Modal
+
+- Beautiful, centered modal dialog
+- Two input fields for Player X and Player O names
+- Character limit: 1-20 characters per name
+- Validation with user-friendly error messages
+
+### Name Display During Game
+
+- Current player display shows custom name instead of "Player X"
+- Example: "Alice" instead of "Player X"
+- Updates dynamically as turns switch
+
+### Win Messages with Custom Names
+
+- Victory message: **"Alice Wins!"** instead of **"Player X Wins!"**
+- Personalized gaming experience
+- Name saved in localStorage for next game
+
+### Name Persistence
+
+- Names saved to localStorage automatically
+- Auto-populated in modal on game restart
+- Survive browser close and reopening
+- Easy to change anytime
+
+### Default Fallback
+
+- If no name entered, uses "Player X" / "Player O"
+- "Skip" button for quick games without names
+- Both names or both skipped (can't mix)
+
+## 🔄 Data Persistence (v1.2-v1.3)
 
 The game automatically saves:
 
 - **Game State**: Board positions, current player, game status
 - **Sound Preference**: Mute/unmute status
+- **Player Names**: Custom names for both players
 - **Timestamp**: When game was last saved
 
 ### Persistence Behavior
 
-- ✅ Preferences persist across browser sessions
+- ✅ Names persist across browser sessions
 - ✅ Game state auto-saves after each move
-- ✅ Game state saved when game ends
-- ✅ State preserved even if browser is closed without warning
-- ✅ Sound toggle state restored on startup
+- ✅ State saved when game ends
+- ✅ Names restored when entering new game
+- ✅ Sound toggle state remembered
 - ✅ Unfinished games can be resumed
 
-### Data Storage Locations
-
-```javascript
-localStorage.tictactoe_gameState; // Game board and state
-localStorage.tictactoe_soundEnabled; // Sound preference
-```
-
-## 🧪 Testing LocalStorage
+## 🧪 Testing Player Names
 
 Open browser console (F12) and test:
 
 ```javascript
-// View all saved data
+// View saved player names
+console.log(localStorage.getItem("tictactoe_playerNames"));
+
+// View game state with names
 console.log(localStorage.getItem("tictactoe_gameState"));
-console.log(localStorage.getItem("tictactoe_soundEnabled"));
 
 // Clear all data (if needed)
 localStorage.clear();
@@ -208,6 +263,17 @@ Edit CSS variables in `style.css`:
   --beige: #e8e2d5;
   --charcoal: #2c2c2c;
   --gold: #c9a961;
+}
+```
+
+### Player Name Validation
+
+Modify in `playerManager.js`:
+
+```javascript
+export function isValidPlayerName(name) {
+  const trimmed = name.trim();
+  return trimmed.length > 0 && trimmed.length <= 20;
 }
 ```
 
@@ -283,6 +349,7 @@ The application follows a modular architecture with clear separation of concerns
 │ soundManager.js  │ Audio        │
 │ uiController.js  │ UI Updates   │
 │ storage.js       │ Persistence  │
+│ playerManager.js │ Player Names │
 └─────────────────────────────────┘
 ```
 
@@ -295,6 +362,7 @@ The application follows a modular architecture with clear separation of concerns
 5. **uiController.js** → Updates UI
 6. **soundManager.js** → Plays audio feedback
 7. **storage.js** → Persists to localStorage
+8. **playerManager.js** → Manages player name operations
 
 ## 🧪 Development
 
@@ -317,11 +385,12 @@ The application follows a modular architecture with clear separation of concerns
 
 ## 📝 Version History
 
-| Version | Features                                                 | Date     |
-| ------- | -------------------------------------------------------- | -------- |
-| 1.0     | Initial release - Basic 2-player game                    | Oct 2025 |
-| 1.1     | Modular refactoring, ES6 modules, documentation          | Oct 2025 |
-| 1.2     | LocalStorage integration, state persistence, preferences | Oct 2025 |
+| Version | Features                                                    | Date     |
+| ------- | ----------------------------------------------------------- | -------- |
+| 1.0     | Initial release - Basic 2-player game                       | Oct 2025 |
+| 1.1     | Modular refactoring, ES6 modules, documentation             | Oct 2025 |
+| 1.2     | LocalStorage integration, state persistence, preferences    | Oct 2025 |
+| 1.3     | Player customization, custom names, personalized experience | Oct 2025 |
 
 ## 🔮 Future Enhancements
 
@@ -357,4 +426,4 @@ Planned features for upcoming versions:
 
 **Made with ❤️ by Saurabh Chauhan for luxury game experiences**
 
-_Built with vanilla JavaScript - No frameworks, no dependencies, just clean code and persistent storage._
+_Built with vanilla JavaScript - No frameworks, no dependencies, just clean code and persistent storage with personalized player names._
