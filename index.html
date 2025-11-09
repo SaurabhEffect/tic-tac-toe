@@ -12,11 +12,11 @@
         <h1 class="game-title">Tic Tac Toe</h1>
         <p class="game-subtitle">Classic Strategy Game</p>
         <button id="startBtn" class="btn-primary">Start Game</button>
+        <button id="statsBtn" class="btn-secondary">Statistics</button>
       </div>
       <div id="playerModal" class="player-modal hidden">
         <div class="modal-content">
           <h2 class="modal-title">Enter Player Names</h2>
-
           <div class="player-input-group">
             <label for="playerXName" class="player-label">
               <span class="player-x-label">Player X</span>
@@ -42,10 +42,76 @@
               maxlength="20"
             />
           </div>
-
           <div class="modal-buttons">
             <button id="startGameBtn" class="btn-primary">Start</button>
             <button id="skipNamesBtn" class="btn-secondary">Skip</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="statsScreen" class="screen">
+      <div class="stats-container">
+        <div class="stats-header">
+          <h1 class="stats-title">Game Statistics</h1>
+          <button id="backToMenuBtn" class="btn-secondary">Back to Menu</button>
+        </div>
+        <div class="stats-section">
+          <h2 class="section-title">Current Session</h2>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-label">Wins</span>
+              <span id="sessionWins" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Losses</span>
+              <span id="sessionLosses" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Draws</span>
+              <span id="sessionDraws" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Total</span>
+              <span id="sessionTotal" class="stat-value">0</span>
+            </div>
+          </div>
+          <button id="resetSessionBtn" class="btn-secondary">
+            Reset Session Score
+          </button>
+        </div>
+        <div class="stats-section">
+          <h2 class="section-title">All-Time Statistics</h2>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-label">Win Percentage</span>
+              <span id="winPercentage" class="stat-value">0%</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Total Games</span>
+              <span id="totalGames" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Current Streak</span>
+              <span id="currentStreak" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Best Streak</span>
+              <span id="bestStreak" class="stat-value">0</span>
+            </div>
+          </div>
+        </div>
+        <div class="stats-section">
+          <h2 class="section-title">Recent Games</h2>
+          <div id="gameHistoryList" class="history-list">
+            <p class="no-history">No games played yet</p>
+          </div>
+          <div class="history-buttons">
+            <button id="clearHistoryBtn" class="btn-secondary">
+              Clear History
+            </button>
+            <button id="exportHistoryBtn" class="btn-secondary">
+              Export as JSON
+            </button>
           </div>
         </div>
       </div>
@@ -64,7 +130,14 @@
             <span class="sound-icon">🔊</span>
           </button>
         </div>
-
+        <div class="live-score">
+          <div class="score-item">
+            <span class="score-label">Session Score:</span>
+            <span id="liveSessionScore" class="score-value"
+              >W: 0 | L: 0 | D: 0</span
+            >
+          </div>
+        </div>
         <div id="gameBoard" class="game-board">
           <div class="cell" data-index="0"></div>
           <div class="cell" data-index="1"></div>
@@ -76,7 +149,6 @@
           <div class="cell" data-index="7"></div>
           <div class="cell" data-index="8"></div>
         </div>
-
         <div id="gameStatus" class="game-status"></div>
         <button id="playAgainBtn" class="btn-secondary hidden">
           Play Again

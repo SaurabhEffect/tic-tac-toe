@@ -67,5 +67,18 @@ export const CSS_CLASSES = {
 export const MESSAGES = {
   WIN: (playerName) => `${playerName} Wins!`,
   DRAW: "It's a Draw!",
-  LOAD_SUCCESS: "Luxury Tic Tac Toe loaded successfully!",
+  LOAD_SUCCESS: "Game loaded successfully!",
+  STATS_RESET: "Session statistics have been reset!",
+  HISTORY_CLEARED: "Game history has been cleared!",
+  HISTORY_EXPORTED: "Game history exported successfully!",
+  EXPORT_ERROR: "Failed to export game history. Please try again.",
+};
+
+export const STATS_CONFIG = {
+  MAX_HISTORY_ENTRIES: 10,
+  STORAGE_KEYS: {
+    STATISTICS: "tictactoe_statistics",
+    SESSION_STATS: "tictactoe_sessionStats",
+    GAME_HISTORY: "tictactoe_gameHistory",
+  },
 };

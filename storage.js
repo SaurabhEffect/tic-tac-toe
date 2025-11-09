@@ -4,6 +4,9 @@ const STORAGE_KEYS = {
   SOUND_ENABLED: "tictactoe_soundEnabled",
   GAME_STATE: "tictactoe_gameState",
   PLAYER_PREFERENCES: "tictactoe_playerPrefs",
+  STATISTICS: "tictactoe_statistics",
+  SESSION_STATS: "tictactoe_sessionStats",
+  GAME_HISTORY: "tictactoe_gameHistory",
 };
 
 const DEFAULT_PREFERENCES = {
@@ -73,4 +76,50 @@ export function savePlayerPreferences(preferences) {
 export function loadPlayerPreferences() {
   const saved = localStorage.getItem(STORAGE_KEYS.PLAYER_PREFERENCES);
   return saved ? JSON.parse(saved) : {};
+}
+
+export function saveStatistics(stats) {
+  try {
+    localStorage.setItem(STORAGE_KEYS.STATISTICS, JSON.stringify(stats));
+  } catch (e) {
+    console.warn("Failed to save statistics to localStorage:", e);
+  }
+}
+
+export function loadStatistics() {
+  const saved = localStorage.getItem(STORAGE_KEYS.STATISTICS);
+  return saved ? JSON.parse(saved) : null;
+}
+
+export function saveSessionStats(sessionStats) {
+  try {
+    sessionStorage.setItem(
+      STORAGE_KEYS.SESSION_STATS,
+      JSON.stringify(sessionStats)
+    );
+  } catch (e) {
+    console.warn("Failed to save session stats to sessionStorage:", e);
+  }
+}
+
+export function loadSessionStats() {
+  const saved = sessionStorage.getItem(STORAGE_KEYS.SESSION_STATS);
+  return saved ? JSON.parse(saved) : null;
+}
+
+export function saveGameHistory(history) {
+  try {
+    localStorage.setItem(STORAGE_KEYS.GAME_HISTORY, JSON.stringify(history));
+  } catch (e) {
+    console.warn("Failed to save game history to localStorage:", e);
+  }
+}
+
+export function loadGameHistory() {
+  const saved = localStorage.getItem(STORAGE_KEYS.GAME_HISTORY);
+  return saved ? JSON.parse(saved) : [];
+}
+
+export function clearGameHistory() {
+  localStorage.removeItem(STORAGE_KEYS.GAME_HISTORY);
 }
