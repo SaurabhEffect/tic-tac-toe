@@ -19,11 +19,11 @@ export function highlightWinningCells(combination, cells) {
 export function displayStatus(elements, message) {
   elements.gameStatus.textContent = message;
 }
-export function showPlayAgainButton(elements) {
-  elements.playAgainBtn.classList.remove(CSS_CLASSES.HIDDEN);
+export function showEndGameButtons(elements) {
+  elements.endGameButtons.classList.remove(CSS_CLASSES.HIDDEN);
 }
-export function hidePlayAgainButton(elements) {
-  elements.playAgainBtn.classList.add(CSS_CLASSES.HIDDEN);
+export function hideEndGameButtons(elements) {
+  elements.endGameButtons.classList.add(CSS_CLASSES.HIDDEN);
 }
 export function switchScreen(hideScreen, showScreen) {
   hideScreen.classList.remove(CSS_CLASSES.ACTIVE);
@@ -71,4 +71,16 @@ export function clearPlayerNameInputs(elements) {
 export function setPlayerNameInputs(elements, names) {
   elements.playerXNameInput.value = names.X;
   elements.playerONameInput.value = names.O;
+}
+
+export function preparePlayerModalForAI(elements) {
+  elements.playerXNameInput.placeholder = "Enter Your Name";
+  elements.playerONameInput.value = "Computer";
+  elements.playerONameInput.disabled = true;
+}
+
+export function preparePlayerModalForTwoPlayer(elements) {
+  elements.playerXNameInput.placeholder = "Player X";
+  elements.playerONameInput.value = "";
+  elements.playerONameInput.disabled = false;
 }

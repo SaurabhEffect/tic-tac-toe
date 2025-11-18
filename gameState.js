@@ -1,6 +1,6 @@
 // Manages the current state of the game
 
-import { GAME_CONFIG } from "./config.js";
+import { GAME_CONFIG, GAME_MODES, AI_CONFIG } from "./config.js";
 
 class GameState {
   constructor() {
@@ -10,6 +10,8 @@ class GameState {
     this.soundEnabled = true;
     this.playerNameX = "Player X";
     this.playerNameO = "Player O";
+    this.gameMode = null;
+    this.aiDifficulty = null;
   }
 
   resetBoard() {
@@ -52,6 +54,23 @@ class GameState {
     this.soundEnabled = !this.soundEnabled;
   }
 
+  setGameMode(mode) {
+    this.gameMode = mode;
+    if (mode === GAME_MODES.AI) {
+      this.aiDifficulty = AI_CONFIG.DIFFICULTY;
+    } else {
+      this.aiDifficulty = null;
+    }
+  }
+
+  isAiTurn() {
+    return (
+      this.gameMode === GAME_MODES.AI &&
+      this.currentPlayer === GAME_CONFIG.PLAYERS.O &&
+      this.isGameActive
+    );
+  }
+
   reset() {
     this.resetBoard();
     this.currentPlayer = GAME_CONFIG.INITIAL_PLAYER;
@@ -64,6 +83,8 @@ class GameState {
       currentPlayer: this.currentPlayer,
       isGameActive: this.isGameActive,
       soundEnabled: this.soundEnabled,
+      gameMode: this.gameMode,
+      aiDifficulty: this.aiDifficulty,
     };
     localStorage.setItem("tictactoe_gameState", JSON.stringify(stateToSave));
   }
@@ -76,6 +97,8 @@ class GameState {
       this.currentPlayer = state.currentPlayer;
       this.isGameActive = state.isGameActive;
       this.soundEnabled = state.soundEnabled;
+      this.gameMode = state.gameMode || null;
+      this.aiDifficulty = state.aiDifficulty || null;
       return true;
     }
     return false;

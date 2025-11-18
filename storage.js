@@ -34,6 +34,8 @@ export function saveGameState(gameStateObj) {
     playerNameX: gameStateObj.playerNameX,
     playerNameO: gameStateObj.playerNameO,
     timestamp: new Date().getTime(),
+    gameMode: gameStateObj.gameMode,
+    aiDifficulty: gameStateObj.aiDifficulty,
   };
 
   try {
@@ -47,6 +49,8 @@ export function loadGameState() {
   const saved = localStorage.getItem(STORAGE_KEYS.GAME_STATE);
   if (saved) {
     const state = JSON.parse(saved);
+    state.gameMode = state.gameMode || null;
+    state.aiDifficulty = state.aiDifficulty || null;
     return state;
   }
   return null;

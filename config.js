@@ -21,6 +21,16 @@ export const WINNING_COMBINATIONS = [
   [2, 4, 6],
 ];
 
+export const GAME_MODES = {
+  TWO_PLAYER: "2-player",
+  AI: "ai",
+};
+
+export const AI_CONFIG = {
+  DIFFICULTY: "easy",
+  DELAY: 500,
+};
+
 export const SOUND_CONFIG = {
   VOLUME: 0.2,
   FREQUENCIES: {
@@ -62,6 +72,7 @@ export const CSS_CLASSES = {
   TAKEN: "taken",
   WINNER: "winner",
   MUTED: "muted",
+  DISABLED: "disabled",
 };
 
 export const MESSAGES = {
