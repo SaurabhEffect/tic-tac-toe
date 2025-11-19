@@ -1,6 +1,6 @@
 // Main Application Entry Point
 // Handles initialization, event listeners, and game flow.
-// Tic Tac Toe Game - v3.0
+// Tic Tac Toe Game - v3.1
 
 import {
   getPlayerNames,
@@ -94,13 +94,17 @@ function handleCellClick(event) {
 
     if (gameState.isAiTurn()) {
       elements.gameBoard.classList.add(CSS_CLASSES.DISABLED);
+      elements.aiThinking.classList.remove(CSS_CLASSES.HIDDEN);
       setTimeout(triggerAIMove, AI_CONFIG.DELAY);
     }
   }
 }
 
 function triggerAIMove() {
-  if (!gameState.isGameActive) return;
+  if (!gameState.isGameActive) {
+    elements.aiThinking.classList.add(CSS_CLASSES.HIDDEN);
+    return;
+  }
 
   const moveIndex = getAIMove(gameState.aiDifficulty);
   if (moveIndex === null) return;
@@ -120,6 +124,7 @@ function triggerAIMove() {
     elements.currentPlayerDisplay.textContent = displayName;
   }
   elements.gameBoard.classList.remove(CSS_CLASSES.DISABLED);
+  elements.aiThinking.classList.add(CSS_CLASSES.HIDDEN);
 }
 
 function makeMove(cell, index) {
@@ -131,6 +136,7 @@ function makeMove(cell, index) {
 
 function handleGameEnd(result) {
   gameState.endGame();
+  elements.aiThinking.classList.add(CSS_CLASSES.HIDDEN);
   let gameResult, winner;
 
   if (result.type === "win") {

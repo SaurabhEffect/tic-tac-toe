@@ -27,7 +27,7 @@ export const GAME_MODES = {
 };
 
 export const AI_CONFIG = {
-  DIFFICULTY: "easy",
+  DIFFICULTY: "medium",
   DELAY: 500,
 };
 
