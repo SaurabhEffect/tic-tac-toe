@@ -54,12 +54,16 @@ class GameState {
     this.soundEnabled = !this.soundEnabled;
   }
 
+  setDifficulty(difficulty) {
+    this.aiDifficulty = difficulty;
+  }
+
   setGameMode(mode) {
     this.gameMode = mode;
     if (mode === GAME_MODES.AI) {
-      this.aiDifficulty = AI_CONFIG.DIFFICULTY;
+      // this.aiDifficulty = AI_CONFIG.DIFFICULTY;
     } else {
-      this.aiDifficulty = null;
+      // this.aiDifficulty = null;
     }
   }
 
@@ -76,40 +80,6 @@ class GameState {
     this.currentPlayer = GAME_CONFIG.INITIAL_PLAYER;
     this.isGameActive = true;
   }
-
-  saveToStorage() {
-    const stateToSave = {
-      board: this.board,
-      currentPlayer: this.currentPlayer,
-      isGameActive: this.isGameActive,
-      soundEnabled: this.soundEnabled,
-      gameMode: this.gameMode,
-      aiDifficulty: this.aiDifficulty,
-    };
-    localStorage.setItem("tictactoe_gameState", JSON.stringify(stateToSave));
-  }
-
-  loadFromStorage() {
-    const saved = localStorage.getItem("tictactoe_gameState");
-    if (saved) {
-      const state = JSON.parse(saved);
-      this.board = state.board;
-      this.currentPlayer = state.currentPlayer;
-      this.isGameActive = state.isGameActive;
-      this.soundEnabled = state.soundEnabled;
-      this.gameMode = state.gameMode || null;
-      this.aiDifficulty = state.aiDifficulty || null;
-      return true;
-    }
-    return false;
-  }
-
-  hasSavedState() {
-    return localStorage.getItem("tictactoe_gameState") !== null;
-  }
-
-  clearSavedState() {
-    localStorage.removeItem("tictactoe_gameState");
-  }
 }
+
 export const gameState = new GameState();

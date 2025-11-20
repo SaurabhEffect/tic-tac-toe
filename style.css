@@ -514,6 +514,60 @@ body {
   margin-top: 0;
 }
 
+.difficulty-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  width: 100%;
+  max-width: 450px;
+}
+
+.difficulty-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5rem 2rem;
+  line-height: 1.6;
+  border-width: 3px;
+  background: var(--beige);
+  border-color: var(--border-light);
+}
+
+.difficulty-btn:hover {
+  background: var(--warm-beige);
+  border-color: var(--gold);
+}
+
+.difficulty-btn.active {
+  background: var(--warm-beige);
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: scale(1.02);
+}
+
+.difficulty-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.difficulty-desc {
+  font-size: 0.95rem;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  color: var(--text-light);
+  text-transform: none;
+}
+
+.end-game-buttons {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 @media (max-width: 768px) {
   :root {
     --cell-size: min(100px, 28vw);

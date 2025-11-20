@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tic Tac Toe</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="game.png" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -23,9 +24,7 @@
           <button id="twoPlayerModeBtn" class="btn-primary mode-btn">
             2 Players
           </button>
-          <button id="aiModeBtn" class="btn-primary mode-btn">
-            vs AI (medium)
-          </button>
+          <button id="aiModeBtn" class="btn-primary mode-btn">vs AI</button>
         </div>
       </div>
     </div>
@@ -98,6 +97,29 @@
       </div>
     </div>
 
+    <div id="difficultySelectionScreen" class="screen">
+      <div class="mode-selector-container">
+        <h2 class="modal-title">Select Difficulty</h2>
+        <div class="difficulty-buttons">
+          <button id="easyModeBtn" class="btn-primary difficulty-btn">
+            <span class="difficulty-title">Easy</span>
+            <span class="difficulty-desc">AI plays randomly.</span>
+          </button>
+          <button id="mediumModeBtn" class="btn-primary difficulty-btn">
+            <span class="difficulty-title">Medium</span>
+            <span class="difficulty-desc">AI blocks wins & plays smart.</span>
+          </button>
+          <button id="hardModeBtn" class="btn-primary difficulty-btn">
+            <span class="difficulty-title">Hard</span>
+            <span class="difficulty-desc"
+              >AI plays a perfect, unbeatable game.</span
+            >
+          </button>
+        </div>
+        <button id="backToModeBtn" class="btn-secondary">Back</button>
+      </div>
+    </div>
+
     <div id="gameScreen" class="screen">
       <div class="game-container">
         <div class="game-header">
@@ -139,6 +161,9 @@
         <div id="endGameButtons" class="end-game-buttons hidden">
           <button id="playAgainBtn" class="btn-secondary">Play Again</button>
           <button id="statsBtnGame" class="btn-secondary">Statistics</button>
+          <button id="changeDifficultyBtn" class="btn-secondary">
+            Change AI
+          </button>
         </div>
         <footer class="game-footer">
           <div class="footer-divider"></div>

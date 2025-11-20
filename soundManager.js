@@ -4,19 +4,46 @@ import { SOUND_CONFIG } from "./config.js";
 import { gameState } from "./gameState.js";
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+let audioContextResumed = false;
+function ensureAudioContext() {
+  if (!audioContextResumed && audioContext.state === "suspended") {
+    audioContext
+      .resume()
+      .then(() => {
+        audioContextResumed = true;
+        console.log("AudioContext resumed");
+      })
+      .catch((err) => {
+        console.warn("Failed to resume AudioContext:", err);
+      });
+  }
+}
+
 function playSound(frequency, duration, type = "sine") {
   if (!gameState.soundEnabled) return;
+
+  ensureAudioContext();
+  if (audioContext.state !== "running") {
+    console.warn("AudioContext not running, sound will not play");
+    return;
+  }
+
   const oscillator = audioContext.createOscillator();
   const gainNode = audioContext.createGain();
+
   oscillator.connect(gainNode);
   gainNode.connect(audioContext.destination);
+
   oscillator.frequency.value = frequency;
   oscillator.type = type;
+
   gainNode.gain.setValueAtTime(SOUND_CONFIG.VOLUME, audioContext.currentTime);
   gainNode.gain.exponentialRampToValueAtTime(
     0.01,
     audioContext.currentTime + duration
   );
+
   oscillator.start(audioContext.currentTime);
   oscillator.stop(audioContext.currentTime + duration);
 }
@@ -29,6 +56,7 @@ export const sounds = {
       SOUND_CONFIG.WAVE_TYPES.MOVE
     );
   },
+
   win: () => {
     playSound(
       SOUND_CONFIG.FREQUENCIES.WIN_NOTE_1,
@@ -50,6 +78,7 @@ export const sounds = {
       );
     }, SOUND_CONFIG.WIN_DELAY.NOTE_3);
   },
+
   draw: () => {
     playSound(
       SOUND_CONFIG.FREQUENCIES.DRAW,
@@ -57,6 +86,7 @@ export const sounds = {
       SOUND_CONFIG.WAVE_TYPES.DRAW
     );
   },
+
   click: () => {
     playSound(
       SOUND_CONFIG.FREQUENCIES.CLICK,

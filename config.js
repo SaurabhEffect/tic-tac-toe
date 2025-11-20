@@ -28,7 +28,11 @@ export const GAME_MODES = {
 
 export const AI_CONFIG = {
   DIFFICULTY: "medium",
-  DELAY: 500,
+  DELAYS: {
+    easy: 500,
+    medium: 700,
+    hard: 1000,
+  },
 };
 
 export const SOUND_CONFIG = {

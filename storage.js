@@ -1,5 +1,7 @@
 // Storage Manager Module - Handles all localStorage operations for preferences and game state
 
+import { AI_CONFIG } from "./config.js";
+
 const STORAGE_KEYS = {
   SOUND_ENABLED: "tictactoe_soundEnabled",
   GAME_STATE: "tictactoe_gameState",
@@ -7,6 +9,7 @@ const STORAGE_KEYS = {
   STATISTICS: "tictactoe_statistics",
   SESSION_STATS: "tictactoe_sessionStats",
   GAME_HISTORY: "tictactoe_gameHistory",
+  DIFFICULTY: "tictactoe_difficulty",
 };
 
 const DEFAULT_PREFERENCES = {
@@ -18,6 +21,15 @@ export function saveSoundPreference(soundEnabled) {
     STORAGE_KEYS.SOUND_ENABLED,
     JSON.stringify(soundEnabled)
   );
+}
+
+export function saveDifficultyPreference(difficulty) {
+  localStorage.setItem(STORAGE_KEYS.DIFFICULTY, JSON.stringify(difficulty));
+}
+
+export function loadDifficultyPreference() {
+  const saved = localStorage.getItem(STORAGE_KEYS.DIFFICULTY);
+  return saved ? JSON.parse(saved) : AI_CONFIG.DIFFICULTY;
 }
 
 export function loadSoundPreference() {
@@ -37,7 +49,6 @@ export function saveGameState(gameStateObj) {
     gameMode: gameStateObj.gameMode,
     aiDifficulty: gameStateObj.aiDifficulty,
   };
-
   try {
     localStorage.setItem(STORAGE_KEYS.GAME_STATE, JSON.stringify(stateToSave));
   } catch (e) {
