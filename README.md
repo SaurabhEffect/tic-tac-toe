@@ -1,14 +1,10 @@
-# Tic Tac Toe
+# Tic Tac Toe - v1.2
 
 A minimalist and elegant implementation of the classic Tic Tac Toe game with a luxury-inspired design aesthetic, built with modular vanilla JavaScript and persistent storage.
 
-## 🎯 Overview
-
-A sophisticated take on the classic Tic Tac Toe game, featuring a luxury-inspired minimal design with cream, beige, charcoal, and gold color palette. Built with vanilla JavaScript using ES6 modules, it offers smooth animations, responsive design, clean code architecture, and persistent data storage using localStorage.
-
 **Version 1.2 Features**: LocalStorage integration for preferences and game state persistence.
 
-## ✨ Features
+## Features
 
 ### Core Features
 
@@ -38,7 +34,7 @@ A sophisticated take on the classic Tic Tac Toe game, featuring a luxury-inspire
 - **Web Audio API**: Dynamic sound generation
 - **LocalStorage API**: Persistent data storage
 
-## 📦 Installation
+## Installation
 
 1. **Download or clone** the repository
 2. **File Structure**:
@@ -65,7 +61,7 @@ A sophisticated take on the classic Tic Tac Toe game, featuring a luxury-inspire
      ```
    - Then visit: `http://localhost:8000`
 
-## 🎮 Usage
+## Usage
 
 1. Click **"Start Game"** on the welcome screen
 2. Player X (charcoal) goes first
@@ -76,189 +72,7 @@ A sophisticated take on the classic Tic Tac Toe game, featuring a luxury-inspire
 7. Toggle sound effects with the speaker icon
 8. Your preferences and unfinished games are automatically saved!
 
-## 📁 Project Structure
-
-### Core Files
-
-#### **index.html**
-
-Main HTML structure with semantic markup and ES6 module imports. Includes footer with GitHub link.
-
-#### **style.css**
-
-Complete styling with CSS custom properties, animations, and responsive design. Includes luxury color palette and elegant footer styling.
-
-#### **script.js**
-
-Main application controller that coordinates all modules. Handles initialization, event listeners, and game flow. Manages localStorage operations for persistence.
-
-### JavaScript Modules
-
-#### **config.js**
-
-Contains all game constants and configuration:
-
-- Game board settings
-- Winning combinations
-- Sound configuration
-- CSS class names
-- Game messages
-
-#### **gameState.js**
-
-Centralized state management with GameState class:
-
-- Board state tracking
-- Current player management
-- Game active status
-- Sound preferences
-- State manipulation methods
-
-#### **gameLogic.js**
-
-Core game logic:
-
-- Win condition checking
-- Draw detection
-- Move validation
-
-#### **domElements.js**
-
-DOM element management:
-
-- Element selection and caching
-- Element validation
-- Centralized DOM references
-
-#### **soundManager.js**
-
-Audio management using Web Audio API:
-
-- Sound playback functions
-- Volume control
-- Different sound effects (move, win, draw, click)
-
-#### **uiController.js**
-
-UI updates and rendering:
-
-- Display updates
-- Cell rendering
-- Screen transitions
-- Status messages
-- Visual feedback
-
-#### **storage.js** (NEW - v1.2)
-
-LocalStorage management:
-
-- Save/load game state
-- Save/load player preferences
-- Sound preference persistence
-- Game state auto-save on close
-
-## 🔄 LocalStorage Features (v1.2)
-
-### Saved Data
-
-The game automatically saves:
-
-- **Game State**: Board positions, current player, game status
-- **Sound Preference**: Mute/unmute status
-- **Timestamp**: When game was last saved
-
-### Persistence Behavior
-
-- ✅ Preferences persist across browser sessions
-- ✅ Game state auto-saves after each move
-- ✅ Game state saved when game ends
-- ✅ State preserved even if browser is closed without warning
-- ✅ Sound toggle state restored on startup
-- ✅ Unfinished games can be resumed
-
-### Data Storage Locations
-
-```javascript
-localStorage.tictactoe_gameState; // Game board and state
-localStorage.tictactoe_soundEnabled; // Sound preference
-```
-
-## 🧪 Testing LocalStorage
-
-Open browser console (F12) and test:
-
-```javascript
-// View all saved data
-console.log(localStorage.getItem("tictactoe_gameState"));
-console.log(localStorage.getItem("tictactoe_soundEnabled"));
-
-// Clear all data (if needed)
-localStorage.clear();
-```
-
-## 🔧 Customization
-
-### Colors
-
-Edit CSS variables in `style.css`:
-
-```css
-:root {
-  --cream: #f4f1ea;
-  --beige: #e8e2d5;
-  --charcoal: #2c2c2c;
-  --gold: #c9a961;
-}
-```
-
-### Cell Size
-
-Adjust dimensions in `style.css`:
-
-```css
-:root {
-  --cell-size: min(120px, 28vw);
-  --gap: 10px;
-}
-```
-
-### Sound Effects
-
-Modify frequencies in `config.js`:
-
-```javascript
-export const SOUND_CONFIG = {
-  FREQUENCIES: {
-    MOVE: 600,
-    WIN_NOTE_1: 523,
-    // ...
-  },
-};
-```
-
-### Game Configuration
-
-Adjust game settings in `config.js`:
-
-```javascript
-export const GAME_CONFIG = {
-  BOARD_SIZE: 9,
-  GRID_DIMENSIONS: 3,
-  INITIAL_PLAYER: "X",
-};
-```
-
-## 🌐 Browser Support
-
-- ✅ Chrome/Edge (latest) - Full support
-- ✅ Firefox (latest) - Full support
-- ✅ Safari (latest) - Full support
-- ✅ Opera (latest) - Full support
-- ✅ Mobile browsers - Requires local server
-
-**Note**: ES6 modules require a server environment or modern browser support for file:// protocol.
-
-## 🏗️ Architecture
+## Architecture
 
 ### Modular Design Pattern
 
@@ -296,26 +110,7 @@ The application follows a modular architecture with clear separation of concerns
 6. **soundManager.js** → Plays audio feedback
 7. **storage.js** → Persists to localStorage
 
-## 🧪 Development
-
-### Adding New Features
-
-1. **Add constants** to `config.js`
-2. **Update state** in `gameState.js` if needed
-3. **Add logic** to `gameLogic.js` for rules
-4. **Update UI** in `uiController.js` for display
-5. **Handle storage** in `storage.js` if data persistence needed
-6. **Wire it up** in `script.js`
-
-### Code Style
-
-- Use JSDoc comments for all functions
-- Follow ES6+ standards
-- Maintain single responsibility per module
-- Keep functions small and focused
-- Use descriptive variable names
-
-## 📝 Version History
+## Version History
 
 | Version | Features                                                 | Date     |
 | ------- | -------------------------------------------------------- | -------- |
@@ -323,7 +118,7 @@ The application follows a modular architecture with clear separation of concerns
 | 1.1     | Modular refactoring, ES6 modules, documentation          | Oct 2025 |
 | 1.2     | LocalStorage integration, state persistence, preferences | Oct 2025 |
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
 Planned features for upcoming versions:
 
@@ -334,7 +129,7 @@ Planned features for upcoming versions:
 - Undo/Hint features
 - PWA support
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -343,7 +138,7 @@ Planned features for upcoming versions:
 5. Test thoroughly
 6. Submit a pull request
 
-## 📄 License
+## License
 
 **Personal Project - Free to Use**
 
@@ -357,4 +152,4 @@ Planned features for upcoming versions:
 
 **Made with ❤️ by Saurabh Chauhan for luxury game experiences**
 
-_Built with vanilla JavaScript - No frameworks, no dependencies, just clean code and persistent storage._
+_Built with vanilla JavaScript - No frameworks, no dependencies._
