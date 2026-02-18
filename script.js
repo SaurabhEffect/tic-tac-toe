@@ -1,181 +1,453 @@
-const gameState = {
-  board: ["", "", "", "", "", "", "", "", ""],
-  currentPlayer: "X",
-  isGameActive: false,
-  soundEnabled: true,
-};
+// Main Application Entry Point
+// Handles initialization, event listeners, and game flow.
+// Tic Tac Toe Game - v3.2
 
-const winningCombinations = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [2, 4, 6],
-];
+import {
+  getPlayerNames,
+  savePlayerNames,
+  getPlayerDisplayName,
+  isValidPlayerName,
+} from "./playerManager.js";
 
-const startScreen = document.getElementById("startScreen");
-const gameScreen = document.getElementById("gameScreen");
-const startBtn = document.getElementById("startBtn");
-const gameBoard = document.getElementById("gameBoard");
-const cells = document.querySelectorAll(".cell");
-const currentPlayerDisplay = document.getElementById("currentPlayerDisplay");
-const gameStatus = document.getElementById("gameStatus");
-const playAgainBtn = document.getElementById("playAgainBtn");
-const soundToggle = document.getElementById("soundToggle");
+import {
+  loadSoundPreference,
+  saveSoundPreference,
+  loadGameState,
+  saveGameState,
+  hasSavedGameState,
+  clearGameState,
+  saveDifficultyPreference,
+  loadDifficultyPreference,
+} from "./storage.js";
 
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+import {
+  CSS_CLASSES,
+  MESSAGES,
+  GAME_MODES,
+  AI_CONFIG,
+  GAME_CONFIG,
+} from "./config.js";
 
-function playSound(frequency, duration, type = "sine") {
-  if (!gameState.soundEnabled) return;
+import { gameState } from "./gameState.js";
+import { getDOMElements, validateDOMElements } from "./domElements.js";
+import { sounds } from "./soundManager.js";
+import { checkGameResult, isValidMove } from "./gameLogic.js";
 
-  const oscillator = audioContext.createOscillator();
-  const gainNode = audioContext.createGain();
+import {
+  updateCurrentPlayerDisplay,
+  updateCellUI,
+  displayWinResult,
+  displayDrawResult,
+  showEndGameButtons,
+  hideEndGameButtons,
+  switchScreen,
+  resetCellsUI,
+  clearStatus,
+  toggleSoundButtonUI,
+  setPlayerNameInputs,
+  showPlayerModal,
+  hidePlayerModal,
+  preparePlayerModalForAI,
+  preparePlayerModalForTwoPlayer,
+} from "./uiController.js";
 
-  oscillator.connect(gainNode);
-  gainNode.connect(audioContext.destination);
+import { statisticsManager } from "./statisticsManager.js";
+import { gameHistoryManager } from "./gameHistoryManager.js";
+import { getAIMove } from "./aiLogic.js";
 
-  oscillator.frequency.value = frequency;
-  oscillator.type = type;
-
-  gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-  gainNode.gain.exponentialRampToValueAtTime(
-    0.01,
-    audioContext.currentTime + duration
-  );
-
-  oscillator.start(audioContext.currentTime);
-  oscillator.stop(audioContext.currentTime + duration);
-}
-
-const sounds = {
-  move: () => playSound(600, 0.08, "sine"),
-  win: () => {
-    playSound(523, 0.12, "sine");
-    setTimeout(() => playSound(659, 0.12, "sine"), 120);
-    setTimeout(() => playSound(784, 0.25, "sine"), 240);
-  },
-  draw: () => playSound(400, 0.2, "triangle"),
-  click: () => playSound(500, 0.04, "sine"),
-};
-
-startBtn.addEventListener("click", () => {
-  sounds.click();
-  startScreen.classList.remove("active");
-  gameScreen.classList.add("active");
-  initGame();
-});
-
-soundToggle.addEventListener("click", () => {
-  gameState.soundEnabled = !gameState.soundEnabled;
-  soundToggle.classList.toggle("muted");
-  sounds.click();
-});
-
-playAgainBtn.addEventListener("click", () => {
-  sounds.click();
-  resetGame();
-});
-
-cells.forEach((cell) => {
-  cell.addEventListener("click", handleCellClick);
-});
+let elements;
+let previousScreen = null;
 
 function initGame() {
-  gameState.isGameActive = true;
-  gameState.currentPlayer = "X";
-  updateCurrentPlayerDisplay();
+  gameState.startGame();
+  const displayName =
+    gameState.currentPlayer === "X"
+      ? gameState.playerNameX
+      : gameState.playerNameO;
+  elements.currentPlayerDisplay.textContent = displayName;
+  updateLiveScore();
+
+  if (gameState.gameMode === GAME_MODES.AI) {
+    const difficulty =
+      gameState.aiDifficulty.charAt(0).toUpperCase() +
+      gameState.aiDifficulty.slice(1);
+    elements.modeIndicator.textContent = `AI Mode (${difficulty})`;
+  } else {
+    elements.modeIndicator.textContent = "2 Player Mode";
+  }
 }
 
 function handleCellClick(event) {
   const cell = event.target;
   const index = parseInt(cell.dataset.index);
-
-  if (gameState.board[index] !== "" || !gameState.isGameActive) {
+  if (isNaN(index)) {
+    console.warn("Invalid cell index");
     return;
   }
+
+  if (
+    (gameState.gameMode === GAME_MODES.AI &&
+      gameState.currentPlayer === GAME_CONFIG.PLAYERS.O) ||
+    !isValidMove(index)
+  ) {
+    return;
+  }
+
   makeMove(cell, index);
   const result = checkGameResult();
+
   if (result) {
     handleGameEnd(result);
   } else {
-    switchPlayer();
+    gameState.switchPlayer();
+    const displayName =
+      gameState.currentPlayer === "X"
+        ? gameState.playerNameX
+        : gameState.playerNameO;
+    elements.currentPlayerDisplay.textContent = displayName;
+
+    if (gameState.isAiTurn()) {
+      elements.gameBoard.classList.add(CSS_CLASSES.DISABLED);
+      elements.aiThinking.classList.remove(CSS_CLASSES.HIDDEN);
+      const delay =
+        AI_CONFIG.DELAYS[gameState.aiDifficulty] || AI_CONFIG.DELAYS.easy;
+      setTimeout(triggerAIMove, delay);
+    }
+
+    if (gameState.isGameActive) {
+      saveGameState(gameState);
+    }
+  }
+}
+
+function triggerAIMove() {
+  if (!gameState.isGameActive) {
+    elements.aiThinking.classList.add(CSS_CLASSES.HIDDEN);
+    return;
+  }
+
+  const moveIndex = getAIMove(gameState.aiDifficulty);
+  if (moveIndex === null) return;
+
+  const cell = elements.cells[moveIndex];
+  makeMove(cell, moveIndex);
+  const result = checkGameResult();
+
+  if (result) {
+    handleGameEnd(result);
+  } else {
+    gameState.switchPlayer();
+    const displayName =
+      gameState.currentPlayer === "X"
+        ? gameState.playerNameX
+        : gameState.playerNameO;
+    elements.currentPlayerDisplay.textContent = displayName;
+  }
+
+  elements.gameBoard.classList.remove(CSS_CLASSES.DISABLED);
+  elements.aiThinking.classList.add(CSS_CLASSES.HIDDEN);
+
+  if (gameState.isGameActive) {
+    saveGameState(gameState);
   }
 }
 
 function makeMove(cell, index) {
-  gameState.board[index] = gameState.currentPlayer;
-  cell.textContent = gameState.currentPlayer;
-  cell.dataset.player = gameState.currentPlayer;
-  cell.classList.add("taken");
+  gameState.makeMove(index);
+  updateCellUI(cell, index);
   sounds.move();
 }
 
-function switchPlayer() {
-  gameState.currentPlayer = gameState.currentPlayer === "X" ? "O" : "X";
-  updateCurrentPlayerDisplay();
-}
-
-function updateCurrentPlayerDisplay() {
-  currentPlayerDisplay.textContent = gameState.currentPlayer;
-}
-
-function checkGameResult() {
-  for (const combination of winningCombinations) {
-    const [a, b, c] = combination;
-    if (
-      gameState.board[a] &&
-      gameState.board[a] === gameState.board[b] &&
-      gameState.board[a] === gameState.board[c]
-    ) {
-      return {
-        type: "win",
-        player: gameState.board[a],
-        combination: combination,
-      };
-    }
-  }
-
-  if (gameState.board.every((cell) => cell !== "")) {
-    return { type: "draw" };
-  }
-  return null;
-}
-
 function handleGameEnd(result) {
-  gameState.isGameActive = false;
+  gameState.endGame();
+  elements.aiThinking.classList.add(CSS_CLASSES.HIDDEN);
+
+  let gameResult, winner;
 
   if (result.type === "win") {
+    const winnerName =
+      result.player === "X" ? gameState.playerNameX : gameState.playerNameO;
     result.combination.forEach((index) => {
-      cells[index].classList.add("winner");
+      elements.cells[index].classList.add("winner");
     });
-    gameStatus.textContent = `Player ${result.player} Wins!`;
+    elements.gameStatus.textContent = `${winnerName} Wins!`;
     sounds.win();
+    gameResult = "win";
+    winner = result.player;
   } else {
-    gameStatus.textContent = "It's a Draw!";
+    displayDrawResult(elements);
     sounds.draw();
+    gameResult = "draw";
+    winner = null;
   }
-  playAgainBtn.classList.remove("hidden");
+
+  statisticsManager.recordGameResult(
+    gameResult,
+    winner,
+    gameState.playerNameX,
+    gameState.playerNameO
+  );
+
+  gameHistoryManager.addGameToHistory(
+    gameResult,
+    winner,
+    gameState.playerNameX,
+    gameState.playerNameO,
+    [...gameState.board]
+  );
+
+  updateLiveScore();
+  showEndGameButtons(elements);
+  clearGameState();
 }
 
 function resetGame() {
-  gameState.board = ["", "", "", "", "", "", "", "", ""];
-  gameState.currentPlayer = "X";
-  gameState.isGameActive = true;
+  gameState.reset();
+  resetCellsUI(elements.cells);
+  clearStatus(elements);
+  hideEndGameButtons(elements);
+  clearGameState();
+}
 
-  cells.forEach((cell) => {
-    cell.textContent = "";
-    cell.classList.remove("taken", "winner");
-    delete cell.dataset.player;
+function updateLiveScore() {
+  const sessionStats = statisticsManager.getSessionStats();
+  elements.liveSessionScore.textContent = `W: ${sessionStats.sessionWins} | L: ${sessionStats.sessionLosses} | D: ${sessionStats.sessionDraws}`;
+}
+
+function updateStatisticsDisplay() {
+  const stats = statisticsManager.getFormattedStats();
+  elements.sessionWins.textContent = stats.session.wins;
+  elements.sessionLosses.textContent = stats.session.losses;
+  elements.sessionDraws.textContent = stats.session.draws;
+  elements.sessionTotal.textContent = stats.session.total;
+  elements.winPercentage.textContent = `${stats.allTime.winPercentage}%`;
+  elements.totalGames.textContent = stats.allTime.total;
+  elements.currentStreak.textContent = stats.allTime.currentStreak;
+  elements.bestStreak.textContent = stats.allTime.bestStreak;
+}
+
+function updateGameHistoryDisplay() {
+  const history = gameHistoryManager.getFormattedHistory();
+
+  if (history.length === 0) {
+    elements.gameHistoryList.innerHTML = `
+      <li class="history-item empty">No games played yet</li>
+    `;
+    return;
+  }
+
+  const historyHTML = history
+    .map(
+      (game) => `
+        <li class="history-item">
+          <span class="history-result">${game.winner}</span>
+          <span class="history-time">${game.date} ${game.time}</span>
+          <span class="history-players">${game.players}</span>
+        </li>
+      `
+    )
+    .join("");
+
+  elements.gameHistoryList.innerHTML = historyHTML;
+}
+
+function setupEventListeners() {
+  elements.cells.forEach((cell) => {
+    cell.addEventListener("click", handleCellClick);
+  });
+  elements.startBtn.addEventListener("click", () => {
+    sounds.click();
+    previousScreen = elements.startScreen;
+    switchScreen(elements.startScreen, elements.modeSelectionScreen);
+  });
+  elements.twoPlayerModeBtn.addEventListener("click", () => {
+    sounds.click();
+    gameState.setGameMode(GAME_MODES.TWO_PLAYER);
+    gameState.aiDifficulty = null;
+    preparePlayerModalForTwoPlayer(elements);
+    const names = getPlayerNames();
+    setPlayerNameInputs(elements, names);
+    previousScreen = elements.modeSelectionScreen;
+    showPlayerModal(elements);
   });
 
-  gameStatus.textContent = "";
-  playAgainBtn.classList.add("hidden");
-  updateCurrentPlayerDisplay();
+  elements.aiModeBtn.addEventListener("click", () => {
+    sounds.click();
+    gameState.setGameMode(GAME_MODES.AI);
+    previousScreen = elements.modeSelectionScreen;
+    switchScreen(
+      elements.modeSelectionScreen,
+      elements.difficultySelectionScreen
+    );
+  });
+
+  elements.easyModeBtn.addEventListener("click", () => {
+    sounds.click();
+    gameState.setDifficulty("easy");
+    saveDifficultyPreference("easy");
+    preparePlayerModalForAI(elements);
+    const names = getPlayerNames();
+    elements.playerXNameInput.value = names.X === "Player X" ? "" : names.X;
+    previousScreen = elements.difficultySelectionScreen;
+    showPlayerModal(elements);
+  });
+
+  elements.mediumModeBtn.addEventListener("click", () => {
+    sounds.click();
+    gameState.setDifficulty("medium");
+    saveDifficultyPreference("medium");
+    preparePlayerModalForAI(elements);
+    const names = getPlayerNames();
+    elements.playerXNameInput.value = names.X === "Player X" ? "" : names.X;
+    previousScreen = elements.difficultySelectionScreen;
+    showPlayerModal(elements);
+  });
+
+  elements.hardModeBtn.addEventListener("click", () => {
+    sounds.click();
+    gameState.setDifficulty("hard");
+    saveDifficultyPreference("hard");
+    preparePlayerModalForAI(elements);
+    const names = getPlayerNames();
+    elements.playerXNameInput.value = names.X === "Player X" ? "" : names.X;
+    previousScreen = elements.difficultySelectionScreen;
+    showPlayerModal(elements);
+  });
+
+  elements.backToModeBtn.addEventListener("click", () => {
+    sounds.click();
+    switchScreen(
+      elements.difficultySelectionScreen,
+      elements.modeSelectionScreen
+    );
+  });
+
+  elements.startGameBtn.addEventListener("click", () => {
+    sounds.click();
+    const playerXName = elements.playerXNameInput.value.trim();
+    const playerOName = elements.playerONameInput.value.trim();
+    if (gameState.gameMode === GAME_MODES.AI) {
+      gameState.playerNameX = playerXName || "Player";
+      gameState.playerNameO = "Computer";
+      savePlayerNames(gameState.playerNameX, "Computer");
+    } else {
+      gameState.playerNameX = playerXName || "Player X";
+      gameState.playerNameO = playerOName || "Player O";
+      savePlayerNames(gameState.playerNameX, gameState.playerNameO);
+    }
+    hidePlayerModal(elements);
+    switchScreen(previousScreen, elements.gameScreen);
+    initGame();
+  });
+
+  elements.skipNamesBtn.addEventListener("click", () => {
+    sounds.click();
+    if (gameState.gameMode === GAME_MODES.AI) {
+      gameState.playerNameX = "Player";
+      gameState.playerNameO = "Computer";
+    } else {
+      gameState.playerNameX = "Player X";
+      gameState.playerNameO = "Player O";
+    }
+    hidePlayerModal(elements);
+    switchScreen(previousScreen, elements.gameScreen);
+    initGame();
+  });
+
+  elements.playAgainBtn.addEventListener("click", () => {
+    sounds.click();
+    resetGame();
+    initGame();
+  });
+
+  elements.changeDifficultyBtn.addEventListener("click", () => {
+    sounds.click();
+    resetGame();
+    switchScreen(elements.gameScreen, elements.difficultySelectionScreen);
+  });
+
+  elements.statsBtn.addEventListener("click", () => {
+    sounds.click();
+    updateStatisticsDisplay();
+    updateGameHistoryDisplay();
+    switchScreen(elements.startScreen, elements.statsScreen);
+  });
+
+  elements.statsBtnGame.addEventListener("click", () => {
+    sounds.click();
+    updateStatisticsDisplay();
+    updateGameHistoryDisplay();
+    previousScreen = elements.gameScreen;
+    switchScreen(elements.gameScreen, elements.statsScreen);
+  });
+
+  elements.backToMenuBtn.addEventListener("click", () => {
+    sounds.click();
+    if (previousScreen === elements.gameScreen) {
+      switchScreen(elements.statsScreen, elements.gameScreen);
+      previousScreen = null;
+    } else {
+      switchScreen(elements.statsScreen, elements.startScreen);
+    }
+  });
+
+  elements.resetSessionBtn.addEventListener("click", () => {
+    sounds.click();
+    if (confirm("Are you sure you want to reset session statistics?")) {
+      statisticsManager.resetSessionStats();
+      updateStatisticsDisplay();
+      updateLiveScore();
+      alert(MESSAGES.STATS_RESET);
+    }
+  });
+
+  elements.clearHistoryBtn.addEventListener("click", () => {
+    sounds.click();
+    if (confirm("Are you sure you want to clear game history?")) {
+      gameHistoryManager.clearHistory();
+      updateGameHistoryDisplay();
+      alert(MESSAGES.HISTORY_CLEARED);
+    }
+  });
+
+  elements.exportHistoryBtn.addEventListener("click", () => {
+    sounds.click();
+    const success = gameHistoryManager.downloadHistoryAsJSON();
+    if (success) {
+      alert(MESSAGES.HISTORY_EXPORTED);
+    } else {
+      alert(MESSAGES.EXPORT_ERROR);
+    }
+  });
+
+  elements.soundToggle.addEventListener("click", () => {
+    gameState.toggleSound();
+    saveSoundPreference(gameState.soundEnabled);
+    toggleSoundButtonUI(elements.soundToggle);
+    if (gameState.soundEnabled) {
+      sounds.click();
+    }
+  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Luxury Tic Tac Toe loaded successfully!");
+  try {
+    elements = getDOMElements();
+    validateDOMElements(elements);
+    setupEventListeners();
+    const savedSoundPref = loadSoundPreference();
+    gameState.soundEnabled = savedSoundPref;
+    if (!savedSoundPref) {
+      elements.soundToggle.classList.add(CSS_CLASSES.MUTED);
+    }
+    const savedDifficulty = loadDifficultyPreference();
+    if (savedDifficulty) {
+      gameState.setDifficulty(savedDifficulty);
+    }
+
+    console.log("✓ Tic Tac Toe v3.2 initialized successfully");
+  } catch (error) {
+    console.error("Failed to initialize game:", error);
+    alert("Failed to load the game. Please refresh the page.");
+  }
 });
