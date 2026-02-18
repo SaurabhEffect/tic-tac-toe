@@ -400,6 +400,69 @@ Difficulty Colors (NEW in v3.2):
 └── Hard: Red (#F44336)
 ```
 
+## Changelog - v3.2
+
+### New Features
+
+- ⭐ **Minimax Algorithm** - Perfect AI play
+- ⭐ **Hard AI Difficulty** - Unbeatable opponent
+- ⭐ **Medium AI Difficulty** - Strategic play
+- ⭐ **Three Difficulty Levels** - Easy/Medium/Hard
+- ⭐ **Difficulty Selection Screen** - Beautiful chooser
+- ⭐ **Alpha-Beta Pruning** - 50x performance boost
+- ⭐ **Difficulty Persistence** - Saves to localStorage
+- ⭐ **Change AI Between Games** - Switch difficulties
+- ⭐ **Difficulty Badge Display** - Shows current level
+
+### Improvements
+
+- Smarter AI opponent
+- Better player experience
+- Optimized calculations
+- Enhanced configuration
+- Cleaner AI module
+- Better performance
+- Difficulty selection UX
+
+### Bug Fixes
+
+- Fixed AI move delays
+- Improved state tracking
+- Enhanced error handling
+- Better memory management
+
+### Version History
+
+| Version  | Release | Key Features                     |
+| -------- | ------- | -------------------------------- |
+| **v1.0** | Initial | Basic Tic Tac Toe                |
+| **v1.1** | Update  | Sound Effects                    |
+| **v1.2** | Update  | LocalStorage                     |
+| **v1.3** | Update  | Player Names                     |
+| **v2.0** | Release | Modular, Stats, History          |
+| **v3.0** | Release | AI Mode, Session Stats           |
+| **v3.1** | Update  | Bug Fixes, Medium AI             |
+| **v3.2** | NEW     | Hard AI, Minimax, 3 Difficulties |
+
+---
+
+## Future Enhancements
+
+### Planned Features
+
+- **Difficulty Rating** - Show ELO rating
+- **Replay System** - Watch past games
+- **Online Multiplayer** - Network play
+- **Leaderboard** - Global rankings
+- **Achievements** - Badge system
+- **Themes** - Color customization
+- **Sound Customization** - More audio options
+- **Export Statistics** - Download data
+- **Undo/Redo** - Move corrections
+- **Time Control** - Timed games
+
+---
+
 ## Contributing
 
 1. Fork the repository
