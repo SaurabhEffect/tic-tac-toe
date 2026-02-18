@@ -2,11 +2,11 @@
 
 A minimalist and elegant implementation of the classic Tic Tac Toe game with a luxury-inspired design aesthetic.
 
-## 🎯 Overview
+## Overview
 
 This project is a sophisticated take on the classic Tic Tac Toe game, featuring a luxury-inspired minimal design with cream, beige, charcoal, and gold color palette. Built with vanilla JavaScript, it offers smooth animations, responsive design, and an elegant user experience.
 
-## ✨ Features
+## Features
 
 - **Luxury Minimal Design**: Clean interface inspired by high-end brand aesthetics
 - **Two Player Mode**: Play against a friend on the same device
@@ -17,14 +17,14 @@ This project is a sophisticated take on the classic Tic Tac Toe game, featuring 
 - **Draw Detection**: Identifies tie games automatically
 - **Play Again**: Quick reset functionality
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - **HTML5**: Semantic markup structure
 - **CSS3**: Modern styling with Grid, Flexbox, and animations
 - **JavaScript (ES6+)**: Game logic and interactivity
 - **Web Audio API**: Dynamic sound generation
 
-## 📦 Installation
+## Installation
 
 1. **Download or clone** the repository
 2. **File Structure**:
@@ -38,7 +38,7 @@ This project is a sophisticated take on the classic Tic Tac Toe game, featuring 
 3. **Open** `index.html` in any modern web browser
 4. **No build process** or dependencies required
 
-## 🎮 Usage
+## Usage
 
 1. Click **"Start Game"** on the welcome screen
 2. Player X (charcoal) goes first
@@ -48,7 +48,7 @@ This project is a sophisticated take on the classic Tic Tac Toe game, featuring 
 6. Click **"Play Again"** to start fresh
 7. Toggle sound effects with the speaker icon
 
-## 🎯 Game Rules
+## Game Rules
 
 - Played on a 3×3 grid
 - Player X uses charcoal marks
@@ -56,7 +56,7 @@ This project is a sophisticated take on the classic Tic Tac Toe game, featuring 
 - First to get 3 in a row wins (horizontal, vertical, or diagonal)
 - All 9 cells filled without winner = draw
 
-## 🎨 Customization
+## Customization
 
 ### Colors
 
@@ -93,15 +93,7 @@ const sounds = {
 };
 ```
 
-## 🌐 Browser Support
-
-- ✅ Chrome/Edge (latest)
-- ✅ Firefox (latest)
-- ✅ Safari (latest)
-- ✅ Opera (latest)
-- ✅ Mobile browsers
-
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -109,7 +101,7 @@ const sounds = {
 4. Push to the branch
 5. Open a Pull Request
 
-## 📝 License
+## License
 
 This project is open source and available for educational purposes.
 
