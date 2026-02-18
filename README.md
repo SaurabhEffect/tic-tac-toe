@@ -16,9 +16,9 @@ A feature-rich implementation of the classic Tic Tac Toe game with AI opponent s
 
 ---
 
-## 🆕 What's New in v3.0
+## What's New in v3.0
 
-### 🤖 **AI Opponent System** _(NEW - MAJOR)_
+### **AI Opponent System** _(NEW - MAJOR)_
 
 - **Easy AI Mode** - Computer player with random move selection
 - **AI Logic Module** - Dedicated AI decision-making system
@@ -28,7 +28,7 @@ A feature-rich implementation of the classic Tic Tac Toe game with AI opponent s
 - **AI Delay** - Realistic thinking delay for better UX
 - **Seamless Integration** - AI works with all existing features
 
-### 🎮 **Game Mode System** _(NEW - MAJOR)_
+### **Game Mode System** _(NEW - MAJOR)_
 
 - **Two-Player Mode** - Classic multiplayer on same device
 - **AI Mode** - Play against computer opponent
@@ -38,7 +38,7 @@ A feature-rich implementation of the classic Tic Tac Toe game with AI opponent s
 - **Dynamic UI** - Changes based on selected mode
 - **Flexible Architecture** - Easy to add more modes
 
-### 📊 **Session Statistics** _(NEW)_
+### **Session Statistics** _(NEW)_
 
 - **Session Win Tracking** - Wins in current session
 - **Session Loss Tracking** - Losses in current session
@@ -48,7 +48,7 @@ A feature-rich implementation of the classic Tic Tac Toe game with AI opponent s
 - **Statistics Reset** - Clear data if needed
 - **Stat Comparison** - Session vs All-Time views
 
-### 🎯 **Statistics Screen** _(NEW)_
+### **Statistics Screen** _(NEW)_
 
 - **Dedicated Statistics Page** - View all game stats
 - **Beautiful Layout** - Professional stats display
@@ -58,7 +58,7 @@ A feature-rich implementation of the classic Tic Tac Toe game with AI opponent s
 - **Back to Menu Button** - Easy navigation
 - **Responsive Design** - Works on all devices
 
-### 💾 **Enhanced Storage System** _(IMPROVED)_
+### **Enhanced Storage System** _(IMPROVED)_
 
 - **Session Statistics Storage** - Separate session tracking
 - **Multiple Storage Keys** - Organized data management
@@ -67,7 +67,7 @@ A feature-rich implementation of the classic Tic Tac Toe game with AI opponent s
 - **Easy Data Retrieval** - Simplified access methods
 - **Legacy Support** - Backwards compatible
 
-### 🔧 **Improved State Management** _(ENHANCED)_
+### **Improved State Management** _(ENHANCED)_
 
 - **Game Mode Tracking** - Knows current mode
 - **AI Difficulty Setting** - Configurable AI level
@@ -76,7 +76,7 @@ A feature-rich implementation of the classic Tic Tac Toe game with AI opponent s
 - **Better State Tracking** - More properties managed
 - **Cleaner Architecture** - Improved organization
 
-### 🎨 **Better UI/UX** _(IMPROVED)_
+### **Better UI/UX** _(IMPROVED)_
 
 - **Start Screen** - Welcome and entry point
 - **Mode Selection Screen** - Choose game type
@@ -86,7 +86,7 @@ A feature-rich implementation of the classic Tic Tac Toe game with AI opponent s
 - **Button Hierarchy** - Clear action buttons
 - **Professional Design** - Polished appearance
 
-### ✅ **Retained from v2.0**
+### **Retained from v2.0**
 
 - **10+ Modular Modules** - Clean architecture
 - **Two-Player Gameplay** - Original mode
@@ -99,9 +99,9 @@ A feature-rich implementation of the classic Tic Tac Toe game with AI opponent s
 
 ---
 
-## ✨ Core Features
+## Core Features
 
-### 🎮 **Game Modes**
+### **Game Modes**
 
 #### Two-Player Mode
 
@@ -122,7 +122,7 @@ A feature-rich implementation of the classic Tic Tac Toe game with AI opponent s
 - **Statistics Tracked** - AI games recorded
 - **Fun Challenge** - Perfect for casual play
 
-### 🤖 **AI Logic**
+### **AI Logic**
 
 - **Empty Cell Detection** - Find valid moves
 - **Random Selection** - Easy mode strategy
@@ -132,7 +132,7 @@ A feature-rich implementation of the classic Tic Tac Toe game with AI opponent s
 - **Game State Aware** - Considers board state
 - **Configurable Delay** - Customizable response time
 
-### 📊 **Statistics System**
+### **Statistics System**
 
 #### Session Statistics _(NEW in v3.0)_
 
@@ -156,7 +156,7 @@ Lifetime Tracking:
 └── Historical Data
 ```
 
-### 📈 **Statistics Display** _(NEW)_
+### **Statistics Display** _(NEW)_
 
 - **Dedicated Statistics Screen** - Separate page
 - **Section Organization** - Grouped metrics
@@ -166,7 +166,7 @@ Lifetime Tracking:
 - **Easy Navigation** - Back to menu button
 - **Beautiful Design** - Professional appearance
 
-### 🎯 **Game Mechanics** (Enhanced)
+### **Game Mechanics** (Enhanced)
 
 - **Win Detection** - All 8 combinations checked
 - **Draw Detection** - Identifies tie games
@@ -176,7 +176,7 @@ Lifetime Tracking:
 - **Mode Switching** - Easy mode selection
 - **Screen Transitions** - Smooth navigation
 
-### 💾 **Data Persistence**
+### **Data Persistence**
 
 - **Auto-save** - Game state saved automatically
 - **LocalStorage** - Browser-based storage
@@ -186,7 +186,7 @@ Lifetime Tracking:
 - **Preferences Saved** - User settings remembered
 - **Recovery Support** - Resume from crashes
 
-### 📜 **Game History** (from v2.0)
+### **Game History** (from v2.0)
 
 - **Complete Recording** - Every game logged
 - **Player Information** - Names recorded
@@ -196,7 +196,7 @@ Lifetime Tracking:
 - **Replay Data** - Future replay support
 - **Maximum 10 Games** - Latest games kept
 
-### 🔊 **Sound System** (Retained)
+### **Sound System** (Retained)
 
 - **Web Audio API** - Programmatic sounds
 - **Move Sound** - Feedback for each move
@@ -208,7 +208,7 @@ Lifetime Tracking:
 
 ---
 
-## 📦 Installation
+## Installation
 
 1. **Download or clone** the repository
 2. **File Structure**:
@@ -241,38 +241,32 @@ Lifetime Tracking:
 
 ---
 
-## 🎮 Usage
+## Usage
 
 1. **Welcome Screen**:
-
    - Click **"Start Game"** to play
    - Click **"Statistics"** to view stats
 
 2. **Mode Selection** _(NEW in v3.0)_:
-
    - Choose **"2 Players"** for classic mode
    - Choose **"vs AI (Easy)"** for computer opponent
 
 3. **Player Names** (Two-Player Mode):
-
    - Enter custom names (optional)
    - Or click "Skip" for default names
 
 4. **Gameplay**:
-
    - Players take turns clicking cells
    - Current player displayed at top
    - First to 3-in-a-row wins
 
 5. **AI Gameplay** (AI Mode - NEW):
-
    - You play as X
    - AI plays as O
    - AI makes moves automatically
    - Same win/draw detection
 
 6. **After Game**:
-
    - View result with winner's name
    - Statistics update automatically _(NEW)_
    - Click "Play Again" for next game
@@ -286,217 +280,7 @@ Lifetime Tracking:
 
 ---
 
-## 📊 Statistics Features (v3.0)
-
-### Session Statistics Screen _(NEW)_
-
-**Current Session Section:**
-
-- Wins: Games won in this session
-- Losses: Games lost in this session (AI mode only)
-- Draws: Tied games in this session
-- Win Rate %: Calculated percentage
-
-**All-Time Section:**
-
-- Total Wins: Lifetime wins
-- Total Losses: Lifetime losses
-- Total Draws: Lifetime draws
-- Total Games: Games played
-- Overall Win Rate: Percentage
-
-### How It Works
-
-1. **Auto-Update** - Stats update after each game
-2. **Session Tracking** - Separate session counter
-3. **All-Time Tracking** - Cumulative stats
-4. **Data Persistence** - Saved to localStorage
-5. **Screen Display** - Beautiful presentation
-6. **Comparison** - Session vs all-time visible
-7. **Reset Option** - Clear data if needed
-
----
-
-## 🤖 AI System (NEW in v3.0)
-
-### AI Logic Flow
-
-```
-Player Makes Move
-    ↓
-Game Checks Win/Draw
-    ↓
-If AI Mode:
-    ├── Get Empty Cells
-    ├── Random Selection (Easy)
-    ├── Optional Delay (500ms)
-    └── AI Move Executed
-    ↓
-Game Checks Result
-    ↓
-Display Result & Update Stats
-```
-
-### Easy AI Implementation
-
-```javascript
-function getEasyAIMove() {
-  const emptyCells = getEmptyCells();
-  // Random selection from available cells
-  return randomCell;
-}
-```
-
-### AI Features
-
-- **Random Moves** - Easy difficulty
-- **Move Validation** - Only legal moves
-- **Configurable Delay** - Feel more human
-- **Game State Aware** - Board context
-- **Statistics Compatible** - Tracked like human games
-- **Extensible** - Medium/Hard modes possible
-
-### Future AI Enhancements
-
-- **Minimax Algorithm** - Perfect play
-- **Medium Difficulty** - Strategic play
-- **Hard Difficulty** - Unbeatable
-- **Difficulty Levels** - User selection
-- **Adaptive AI** - Learning from player
-
----
-
-## 🏗️ Modular Architecture (v3.0)
-
-### Module Count: 12 Specialized Modules
-
-#### New Modules in v3.0
-
-**aiLogic.js** ⭐ NEW
-
-- AI decision-making
-- Move evaluation
-- Random selection (easy)
-- Extensible for harder AI
-
-#### Enhanced Modules in v3.0
-
-**gameState.js** ENHANCED
-
-- Game mode tracking
-- AI difficulty setting
-- Board state for AI
-- More configuration
-
-**config.js** ENHANCED
-
-- Game modes constants
-- AI configuration
-- Difficulty settings
-- Easy mode defaults
-
-**storage.js** ENHANCED
-
-- Session statistics storage
-- Multiple storage keys
-- Better organization
-- Improved structure
-
-**uiController.js** ENHANCED
-
-- Screen management
-- Mode selection display
-- Statistics screen rendering
-- Navigation handling
-
-#### Existing Modules (from v2.0)
-
-**script.js**
-
-- Application entry point
-- Event initialization
-- Game flow management
-
-**gameLogic.js**
-
-- Win condition checking
-- Move validation
-- Draw detection
-
-**playerManager.js**
-
-- Player name storage
-- Name validation
-- Display names
-
-**domElements.js**
-
-- DOM references
-- Element validation
-- Centralized access
-
-**soundManager.js**
-
-- Web Audio API
-- Sound generation
-- Volume control
-
-**statisticsManager.js**
-
-- Statistics calculation
-- Win/draw counting
-- Percentage calculation
-
-**gameHistoryManager.js**
-
-- Game recording
-- History retrieval
-- Timestamp management
-
----
-
-## 📱 Screens and Navigation (v3.0)
-
-### Screen Flow
-
-```
-Start Screen
-    ├── "Start Game" → Mode Selection Screen
-    └── "Statistics" → Statistics Screen
-
-Mode Selection Screen _(NEW)_
-    ├── "2 Players" → Player Names Modal → Game Screen
-    └── "vs AI" → Game Screen (X vs AI)
-
-Game Screen
-    ├── Play Game
-    └── Game Over → Result Display
-
-Statistics Screen _(NEW)_
-    ├── View Session Stats
-    ├── View All-Time Stats
-    └── "Back to Menu" → Start Screen
-```
-
-### New Screens in v3.0
-
-**Mode Selection Screen**
-
-- Two large buttons
-- Clear mode options
-- Professional design
-- Easy selection
-
-**Statistics Screen**
-
-- Session metrics section
-- All-time metrics section
-- Back to menu button
-- Organized grid layout
-
----
-
-## 🎯 File Breakdown
+## File Breakdown
 
 | Module                    | Size    | Purpose                         |
 | ------------------------- | ------- | ------------------------------- |
@@ -517,7 +301,7 @@ Statistics Screen _(NEW)_
 
 ---
 
-## 🎨 Visual Design
+## Visual Design
 
 ### Color Palette
 
@@ -534,129 +318,11 @@ Accent Colors:
 └── Disabled: #E8E0D8
 ```
 
-### UI Components
-
-**Buttons**
-
-- Primary buttons - Main actions
-- Secondary buttons - Alternative actions
-- Mode buttons - Game mode selection
-- Navigation buttons - Screen transitions
-
-**Text**
-
-- Titles - Game title
-- Subtitles - Game description
-- Labels - Stat labels
-- Values - Stat values
-
-### Responsive Design
-
-```
-Mobile: < 768px
-├── Stack layout
-├── Touch targets
-└── Mobile optimized
-
-Tablet: 768px - 1024px
-├── Balanced layout
-└── Adaptive spacing
-
-Desktop: > 1024px
-├── Full layout
-└── Enhanced effects
-```
-
 ---
 
-## 💾 LocalStorage Structure
+## Changelog - v3.0
 
-### Storage Keys (v3.0 - ENHANCED)
-
-```javascript
-STORAGE_KEYS = {
-  SOUND_ENABLED: "tictactoe_soundEnabled",
-  GAME_STATE: "tictactoe_gameState",
-  PLAYER_PREFERENCES: "tictactoe_playerPrefs",
-  STATISTICS: "tictactoe_statistics",
-  SESSION_STATS: "tictactoe_sessionStats" // NEW
-  GAME_HISTORY: "tictactoe_gameHistory",
-}
-```
-
-### Saved Data Structure
-
-```javascript
-localStorage Items:
-├── soundEnabled              // Boolean
-├── gameState                 // Current board
-├── playerXName              // String
-├── playerOName              // String
-├── statistics               // Win/draw counts
-├── sessionStats             // Session tracking (NEW)
-├── gameHistory             // Array of games
-└── preferences             // User settings
-```
-
----
-
-## 🔧 Configuration
-
-### Game Configuration
-
-Edit **config.js** to customize:
-
-```javascript
-GAME_CONFIG = {
-  BOARD_SIZE: 9,
-  GRID_DIMENSIONS: 3,
-  INITIAL_PLAYER: "X",
-};
-
-GAME_MODES = {
-  TWO_PLAYER: "2-player",
-  AI: "ai",
-};
-
-AI_CONFIG = {
-  DIFFICULTY: "easy",
-  DELAY: 500,
-};
-```
-
-### Customization Options
-
-- Change board size
-- Modify sound frequencies
-- Adjust AI difficulty
-- Configure delays
-- Customize messages
-- Change winning combinations
-
----
-
-## 🎵 Sound System
-
-### Audio Features
-
-- **Move Sound** - 600 Hz frequency
-- **Win Sounds** - Triadic chord (523, 659, 784 Hz)
-- **Draw Sound** - Notification (400 Hz)
-- **Volume** - 0.2 default level
-- **Web Audio API** - No external files
-
-### Sound Control
-
-- Toggle button available
-- Preference saved
-- Works in all modes
-- Silent mode option
-
----
-
-## 🎓 Changelog - v3.0
-
-### ✨ New Features
+### New Features
 
 - ⭐ **AI Opponent** - Play against computer
 - ⭐ **Game Mode Selection** - Choose 2P or AI
@@ -667,7 +333,7 @@ AI_CONFIG = {
 - ⭐ **AI Delay** - Realistic thinking time
 - ⭐ **Enhanced Storage** - Session data support
 
-### 🔧 Improvements
+### Improvements
 
 - Better screen organization
 - Enhanced navigation
@@ -677,7 +343,7 @@ AI_CONFIG = {
 - More configuration options
 - Scalable AI system
 
-### 📈 Version History
+### Version History
 
 | Version  | Release | Key Features             |
 | -------- | ------- | ------------------------ |
@@ -690,48 +356,7 @@ AI_CONFIG = {
 
 ---
 
-## 🚀 Performance
-
-### File Sizes
-
-```
-HTML: ~8.2 KB
-CSS: ~13.4 KB
-JavaScript: ~36.7 KB (12 modules)
-Total: ~58.3 KB (lightweight)
-```
-
-### Load Time
-
-- **Initial Load**: < 1 second
-- **Game Start**: Instant
-- **Mode Change**: < 100ms
-- **AI Move**: 500ms (configurable)
-
-### Optimizations
-
-- Modular code
-- Minimal DOM updates
-- Efficient state management
-- Optimized styling
-- No external dependencies
-
----
-
-## 📝 Browser Support
-
-| Browser     | Version | Status  |
-| ----------- | ------- | ------- |
-| **Chrome**  | 90+     | ✅ Full |
-| **Firefox** | 88+     | ✅ Full |
-| **Safari**  | 12+     | ✅ Full |
-| **Edge**    | 90+     | ✅ Full |
-| **Opera**   | 77+     | ✅ Full |
-| **Mobile**  | Modern  | ✅ Full |
-
----
-
-## 🔮 Future Enhancements
+## Future Enhancements
 
 ### Planned Features
 
@@ -748,7 +373,7 @@ Total: ~58.3 KB (lightweight)
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -759,7 +384,7 @@ Total: ~58.3 KB (lightweight)
 
 ---
 
-## 📄 License
+## License
 
 **Personal Project - Free to Use**
 
@@ -773,4 +398,4 @@ Total: ~58.3 KB (lightweight)
 
 **Made with ❤️ by Saurabh Chauhan for strategic gaming! with AI & advanced analytics!**
 
-_Built with vanilla JavaScript - No frameworks, no dependencies, just clean code with AI opponent and persistent stats._
+_Built with vanilla JavaScript - No frameworks, no dependencies._
