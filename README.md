@@ -14,16 +14,16 @@ A minimalist and elegant implementation of the classic Tic Tac Toe game with a l
 
 ---
 
-## 🆕 What's New in v2.0
+## What's New in v2.0
 
-### 🏗️ **Completely Modular Architecture** _(NEW)_
+### **Completely Modular Architecture** _(NEW)_
 
 - **10 Specialized Modules** - Each with single responsibility
 - **Better Code Organization** - Easier to maintain and extend
 - **Import/Export System** - Clean module dependencies
 - **Scalable Design** - Easy to add new features
 
-### 📊 **Advanced Statistics System** _(NEW)_
+### **Advanced Statistics System** _(NEW)_
 
 - **Player Win Counts** - Track total wins per player
 - **Draw Tracking** - Record total draws
@@ -31,7 +31,7 @@ A minimalist and elegant implementation of the classic Tic Tac Toe game with a l
 - **Game Counter** - Total games played
 - **Statistics Display** - View all stats in dedicated screen
 
-### 📜 **Game History Management** _(NEW)_
+### **Game History Management** _(NEW)_
 
 - **Move Recording** - Complete history of all moves
 - **Game Results** - Win/Draw/Loss tracking
@@ -39,7 +39,7 @@ A minimalist and elegant implementation of the classic Tic Tac Toe game with a l
 - **Timestamp Recording** - When each game was played
 - **History Persistence** - Saved to localStorage
 
-### 🎯 **Enhanced Core Features**
+### **Enhanced Core Features**
 
 - All v1.3 features maintained and improved
 - Better state management
@@ -49,9 +49,9 @@ A minimalist and elegant implementation of the classic Tic Tac Toe game with a l
 
 ---
 
-## ✨ Core Features
+## Core Features
 
-### 🎨 **Luxury Minimal Design**
+### **Luxury Minimal Design**
 
 - **Premium Aesthetic** - Cream, beige, charcoal, and gold palette
 - **Clean Interface** - Minimal visual clutter
@@ -59,7 +59,7 @@ A minimalist and elegant implementation of the classic Tic Tac Toe game with a l
 - **Smooth Animations** - Elegant transitions and hover effects
 - **Professional Typography** - High-end brand aesthetic
 
-### 👥 **Two Player Mode**
+### **Two Player Mode**
 
 - **Same Device Play** - Play against a friend
 - **Custom Player Names** - Personalize your game
@@ -67,7 +67,7 @@ A minimalist and elegant implementation of the classic Tic Tac Toe game with a l
 - **Name Validation** - Clean player name input
 - **Current Player Display** - Always know whose turn it is
 
-### 🔊 **Sound System**
+### **Sound System**
 
 - **Subtle Audio Feedback** - Non-intrusive sound effects
 - **Toggle Functionality** - Easy on/off control
@@ -75,7 +75,7 @@ A minimalist and elegant implementation of the classic Tic Tac Toe game with a l
 - **Web Audio API** - Programmatic sound generation
 - **Move Confirmation** - Audio feedback for each move
 
-### 🎮 **Game Mechanics**
+### **Game Mechanics**
 
 - **Win Detection** - Automatic detection with visual highlighting
 - **Draw Detection** - Identifies tie games
@@ -83,7 +83,7 @@ A minimalist and elegant implementation of the classic Tic Tac Toe game with a l
 - **Game State Management** - Robust state tracking
 - **Play Again** - Quick reset for next game
 
-### 💾 **Data Persistence**
+### **Data Persistence**
 
 - **Auto-save** - Game state saved automatically
 - **LocalStorage** - Browser-based persistence
@@ -91,7 +91,7 @@ A minimalist and elegant implementation of the classic Tic Tac Toe game with a l
 - **History Recorded** - Complete game history maintained
 - **Recovery Support** - Resume unfinished games
 
-### 📈 **Statistics & History**
+### **Statistics & History**
 
 - **Win Statistics** - View all-time wins
 - **Draw Count** - Total draws tracked
@@ -101,7 +101,7 @@ A minimalist and elegant implementation of the classic Tic Tac Toe game with a l
 
 ---
 
-## 📦 Installation
+## Installation
 
 1. **Download or clone** the repository
 2. **File Structure**:
@@ -131,7 +131,7 @@ A minimalist and elegant implementation of the classic Tic Tac Toe game with a l
      ```
    - Then visit: `http://localhost:8000`
 
-## 🎮 Usage
+## Usage
 
 1. Click **"Start Game"** on the welcome screen
 2. **Enter Player Names** (NEW in v1.3):
@@ -167,7 +167,7 @@ A minimalist and elegant implementation of the classic Tic Tac Toe game with a l
 
 ---
 
-## 🎮 Game Features
+## Game Features
 
 ### Core Gameplay
 
@@ -215,7 +215,7 @@ Recorded Data:
 
 ---
 
-## 🏗️ Modular Architecture (v2.0)
+## Modular Architecture (v2.0)
 
 ### Module Responsibilities
 
@@ -293,59 +293,7 @@ Recorded Data:
 
 ---
 
-## 📊 Statistics Feature (NEW in v2.0)
-
-### Available Statistics
-
-```
-Player X Statistics:
-├── Total Wins: 15
-├── Win Rate: 60%
-└── Games Played: 25
-
-Player O Statistics:
-├── Total Wins: 10
-├── Win Rate: 40%
-└── Games Played: 25
-
-Overall Statistics:
-├── Total Games: 25
-├── Draws: 0
-└── Win Distribution: 60/40
-```
-
-### How Statistics Work
-
-1. **Auto-tracking** - Statistics updated after each game
-2. **Persistent** - Saved to browser localStorage
-3. **Accurate** - All games recorded and counted
-4. **Display Screen** - Dedicated statistics screen
-5. **Reset Option** - Clear all data if needed
-
----
-
-## 📜 Game History Feature (NEW in v2.0)
-
-### History Tracking
-
-Each game records:
-
-- **Player Names** - Who played
-- **Game Result** - Winner or draw
-- **Timestamp** - When game was played
-- **Move Count** - Moves made in game
-- **Final Board** - End-game position
-
-### History Display
-
-- **View Last Games** - Recent game results
-- **Player Performance** - Individual player history
-- **Date/Time Info** - When games were played
-- **Result Summary** - Quick overview
-
----
-
-## 🎨 Visual Design
+## Visual Design
 
 ### Color Palette
 
@@ -362,167 +310,11 @@ Accent Colors:
 └── Disabled: #E8E0D8
 ```
 
-### Responsive Breakpoints
-
-```
-Mobile: < 768px
-├── Stack layout
-├── Larger touch targets
-└── Mobile-optimized
-
-Tablet: 768px - 1024px
-├── Adaptive grid
-└── Balanced spacing
-
-Desktop: > 1024px
-├── Full layout
-├── Optimal spacing
-└── Enhanced effects
-```
-
 ---
 
-## 💾 Local Storage
+## Changelog - v2.0
 
-### Saved Data Structure
-
-```javascript
-localStorage Items:
-├── soundEnabled        // Boolean
-├── playerXName         // String
-├── playerOName         // String
-├── gameState          // Game board state
-├── statistics         // Win/draw counts
-├── gameHistory        // Array of past games
-└── preferences        // User settings
-```
-
----
-
-## 🔧 Configuration
-
-### Customize Game Settings
-
-Edit **config.js** to modify:
-
-- Board size (currently 3x3)
-- Sound frequencies
-- Audio volume
-- Default player names
-- Custom messages
-- Winning combinations
-
-```javascript
-export const GAME_CONFIG = {
-  BOARD_SIZE: 9,
-  GRID_DIMENSIONS: 3,
-  INITIAL_PLAYER: "X",
-  // ... more config
-};
-```
-
----
-
-## 🎵 Sound System
-
-### Audio Features
-
-- **Move Sound** - 600 Hz frequency
-- **Win Sounds** - Triadic chord (523, 659, 784 Hz)
-- **Volume Control** - 0.2 default volume
-- **Toggle Option** - Easy on/off
-- **Web Audio API** - No external files needed
-
----
-
-## 📱 Responsive Design
-
-### Mobile Optimization
-
-- Touch-friendly button sizes
-- Vertical layout adaptation
-- Readable text on small screens
-- Optimized spacing
-
-### Tablet Optimization
-
-- Balanced grid layout
-- Proper touch targets
-- Medium font sizes
-
-### Desktop Experience
-
-- Full feature display
-- Optimal spacing
-- Enhanced animations
-- Perfect responsiveness
-
----
-
-## 🎯 Usage Guide
-
-### Starting a Game
-
-1. Click "Start Game" button
-2. Enter player names (or use defaults)
-3. Click "Start" to begin
-4. Players alternate clicking board cells
-
-### Viewing Statistics
-
-1. Click "Statistics" on main screen
-2. View all-time statistics
-3. See win rates and game counts
-4. Option to reset stats
-
-### Checking Game History
-
-1. Access from statistics screen
-2. View recent games
-3. See player names and results
-4. Check timestamps
-
-### Sound Control
-
-- Toggle sound on/off with button
-- Preference saved automatically
-- Affects move and win sounds
-
----
-
-## 🚨 Troubleshooting
-
-### Modules Not Loading
-
-- Ensure all files in same directory
-- Check browser console for errors
-- Verify file names are correct
-- Use a local server (not file:// protocol)
-
-### Statistics Not Saving
-
-- Check browser localStorage is enabled
-- Clear cache and reload
-- Verify browser console for errors
-
-### Sound Not Playing
-
-- Check browser audio permission
-- Verify soundManager.js loaded
-- Check volume settings
-- Modern browsers may require interaction first
-
-### Game State Lost
-
-- Check localStorage is enabled
-- Verify browser hasn't cleared data
-- Check for browser storage limits
-
----
-
-## 🎓 Changelog - v2.0
-
-### ✨ New Features
+### New Features
 
 - ⭐ **10 Modular Files** - Complete architecture overhaul
 - ⭐ **Statistics Manager** - Win/draw tracking system
@@ -530,7 +322,7 @@ export const GAME_CONFIG = {
 - ⭐ **Enhanced Storage** - Improved data management
 - ⭐ **Better Organization** - Clean module structure
 
-### 🔧 Improvements
+### Improvements
 
 - Better separation of concerns
 - Improved code maintainability
@@ -539,14 +331,14 @@ export const GAME_CONFIG = {
 - Cleaner imports/exports
 - Improved documentation
 
-### 🐛 Bug Fixes
+### Bug Fixes
 
 - Fixed state management issues
 - Improved event handling
 - Better error handling
 - Enhanced validation
 
-### 📈 Version History
+### Version History
 
 | Version  | Release | Key Features                 |
 | -------- | ------- | ---------------------------- |
@@ -558,77 +350,7 @@ export const GAME_CONFIG = {
 
 ---
 
-## 🚀 Performance
-
-### File Sizes
-
-```
-HTML: ~7.7 KB
-CSS: ~12.5 KB
-JavaScript: ~23.8 KB (10 modules)
-Total: ~44 KB (lightweight)
-```
-
-### Load Time
-
-- **Initial Load**: < 1 second
-- **Game Start**: Instant
-- **Interactions**: < 50ms response
-
-### Optimizations
-
-- Modular code (lazy-loaded as needed)
-- Minimal DOM operations
-- Efficient state management
-- Optimized styling
-- No external dependencies
-
----
-
-## 🤝 Code Quality
-
-### Best Practices
-
-✅ ES6 Modules for organization
-✅ Single Responsibility Principle
-✅ Clean Code principles
-✅ Proper error handling
-✅ Input validation
-✅ Comprehensive comments
-
-### Architecture Pattern
-
-- **Modular Design** - Separate concerns
-- **State Management** - Centralized game state
-- **Event-Driven** - User interactions
-- **Persistent Storage** - LocalStorage
-- **Data Persistence** - Statistics & History
-
----
-
-## 📝 Browser Support
-
-| Browser     | Version | Status  |
-| ----------- | ------- | ------- |
-| **Chrome**  | 90+     | ✅ Full |
-| **Firefox** | 88+     | ✅ Full |
-| **Safari**  | 12+     | ✅ Full |
-| **Edge**    | 90+     | ✅ Full |
-| **Opera**   | 77+     | ✅ Full |
-| **Mobile**  | Modern  | ✅ Full |
-
----
-
-## 🎮 Keyboard Shortcuts
-
-- **Enter** - Confirm player names
-- **Escape** - Close modals (future)
-- **R** - Play again (future)
-- **S** - Toggle sound (future)
-
----
-
-## 🔮 Future Enhancements
+## Future Enhancements
 
 ### Planned Features
 
@@ -645,26 +367,7 @@ Total: ~44 KB (lightweight)
 
 ---
 
-## 📞 Support & Resources
-
-### Documentation
-
-- Inline code comments
-- Module descriptions
-- Configuration guide
-- Usage examples
-
-### Troubleshooting
-
-- Check browser console
-- Verify all files present
-- Clear browser cache
-- Try different browser
-- Check localStorage enabled
-
----
-
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -673,7 +376,7 @@ Total: ~44 KB (lightweight)
 5. Test thoroughly
 6. Submit a pull request
 
-## 📄 License
+## License
 
 **Personal Project - Free to Use**
 
@@ -687,4 +390,4 @@ Total: ~44 KB (lightweight)
 
 **Made with ❤️ by Saurabh Chauhan for luxury game experiences**
 
-_Built with vanilla JavaScript - No frameworks, no dependencies, just clean code and persistent storage with personalized player names._
+_Built with vanilla JavaScript - No frameworks, no dependencies._
