@@ -1,7 +1,47 @@
 // Game History Manager Module - Handles game history logging and export
 
+import { sanitizePlayerName } from "./playerManager.js";
+
 const HISTORY_STORAGE_KEY = "tictactoe_gameHistory";
 const MAX_HISTORY_ENTRIES = 10;
+
+// Generic short-string coercion for values loaded from untrusted storage.
+function safeText(value, maxLen = 40) {
+  if (typeof value !== "string") return "";
+  let out = "";
+  for (const ch of value) {
+    const code = ch.codePointAt(0);
+    if (code <= 0x1f || (code >= 0x7f && code <= 0x9f)) continue;
+    out += ch;
+  }
+  return out.slice(0, maxLen);
+}
+
+function safeBoard(board) {
+  if (!Array.isArray(board) || board.length !== 9) return null;
+  return board.map((cell) => (cell === "X" || cell === "O" ? cell : ""));
+}
+
+// Rebuild a single history entry from untrusted storage: whitelist fields,
+// enforce types, sanitize the player-controlled strings.
+function sanitizeHistoryEntry(entry) {
+  if (!entry || typeof entry !== "object") return null;
+  const result = entry.result === "draw" ? "draw" : "win";
+  const winner = entry.winner === "X" || entry.winner === "O" ? entry.winner : null;
+  const id = Number.isFinite(Number(entry.id)) ? Number(entry.id) : 0;
+  return {
+    id,
+    timestamp: safeText(entry.timestamp, 40),
+    result,
+    winner,
+    winnerName: sanitizePlayerName(entry.winnerName) || "Draw",
+    playerX: sanitizePlayerName(entry.playerX) || "Player X",
+    playerO: sanitizePlayerName(entry.playerO) || "Player O",
+    board: safeBoard(entry.board),
+    date: safeText(entry.date, 40),
+    time: safeText(entry.time, 40),
+  };
+}
 
 export class GameHistoryManager {
   constructor() {
@@ -9,12 +49,26 @@ export class GameHistoryManager {
   }
 
   loadHistory() {
-    const saved = localStorage.getItem(HISTORY_STORAGE_KEY);
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem(HISTORY_STORAGE_KEY);
+      if (!saved) return [];
+      const parsed = JSON.parse(saved);
+      if (!Array.isArray(parsed)) return [];
+      return parsed
+        .slice(0, MAX_HISTORY_ENTRIES)
+        .map(sanitizeHistoryEntry)
+        .filter(Boolean);
+    } catch {
+      return [];
+    }
   }
 
   saveHistory() {
-    localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(this.history));
+    try {
+      localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(this.history));
+    } catch (e) {
+      console.warn("Failed to save game history:", e);
+    }
   }
 
   addGameToHistory(
@@ -24,15 +78,17 @@ export class GameHistoryManager {
     playerOName,
     finalBoard = null
   ) {
+    const safeX = sanitizePlayerName(playerXName) || "Player X";
+    const safeO = sanitizePlayerName(playerOName) || "Player O";
     const gameEntry = {
       id: Date.now(),
       timestamp: new Date().toISOString(),
-      result: result,
-      winner: winner,
-      winnerName: this.getWinnerDisplayName(winner, playerXName, playerOName),
-      playerX: playerXName,
-      playerO: playerOName,
-      board: finalBoard,
+      result: result === "draw" ? "draw" : "win",
+      winner: winner === "X" || winner === "O" ? winner : null,
+      winnerName: this.getWinnerDisplayName(winner, safeX, safeO),
+      playerX: safeX,
+      playerO: safeO,
+      board: safeBoard(finalBoard),
       date: new Date().toLocaleDateString(),
       time: new Date().toLocaleTimeString(),
     };
