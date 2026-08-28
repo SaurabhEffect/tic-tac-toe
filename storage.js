@@ -16,25 +16,51 @@ const DEFAULT_PREFERENCES = {
   soundEnabled: true,
 };
 
+const VALID_DIFFICULTIES = ["easy", "medium", "hard"];
+
+function safeParse(raw, fallback) {
+  if (raw === null || raw === undefined) return fallback;
+  try {
+    const parsed = JSON.parse(raw);
+    return parsed === null || parsed === undefined ? fallback : parsed;
+  } catch {
+    return fallback;
+  }
+}
+
 export function saveSoundPreference(soundEnabled) {
-  localStorage.setItem(
-    STORAGE_KEYS.SOUND_ENABLED,
-    JSON.stringify(soundEnabled)
-  );
+  try {
+    localStorage.setItem(
+      STORAGE_KEYS.SOUND_ENABLED,
+      JSON.stringify(Boolean(soundEnabled))
+    );
+  } catch (e) {
+    console.warn("Failed to save sound preference:", e);
+  }
 }
 
 export function saveDifficultyPreference(difficulty) {
-  localStorage.setItem(STORAGE_KEYS.DIFFICULTY, JSON.stringify(difficulty));
+  try {
+    localStorage.setItem(STORAGE_KEYS.DIFFICULTY, JSON.stringify(difficulty));
+  } catch (e) {
+    console.warn("Failed to save difficulty preference:", e);
+  }
 }
 
 export function loadDifficultyPreference() {
-  const saved = localStorage.getItem(STORAGE_KEYS.DIFFICULTY);
-  return saved ? JSON.parse(saved) : AI_CONFIG.DIFFICULTY;
+  const value = safeParse(
+    localStorage.getItem(STORAGE_KEYS.DIFFICULTY),
+    AI_CONFIG.DIFFICULTY
+  );
+  return VALID_DIFFICULTIES.includes(value) ? value : AI_CONFIG.DIFFICULTY;
 }
 
 export function loadSoundPreference() {
-  const saved = localStorage.getItem(STORAGE_KEYS.SOUND_ENABLED);
-  return saved !== null ? JSON.parse(saved) : DEFAULT_PREFERENCES.soundEnabled;
+  const value = safeParse(
+    localStorage.getItem(STORAGE_KEYS.SOUND_ENABLED),
+    DEFAULT_PREFERENCES.soundEnabled
+  );
+  return typeof value === "boolean" ? value : DEFAULT_PREFERENCES.soundEnabled;
 }
 
 export function saveGameState(gameStateObj) {
@@ -57,40 +83,60 @@ export function saveGameState(gameStateObj) {
 }
 
 export function loadGameState() {
-  const saved = localStorage.getItem(STORAGE_KEYS.GAME_STATE);
-  if (saved) {
-    const state = JSON.parse(saved);
-    state.gameMode = state.gameMode || null;
-    state.aiDifficulty = state.aiDifficulty || null;
-    return state;
+  const state = safeParse(localStorage.getItem(STORAGE_KEYS.GAME_STATE), null);
+  if (!state || typeof state !== "object" || !Array.isArray(state.board)) {
+    return null;
   }
-  return null;
+  state.gameMode = state.gameMode || null;
+  state.aiDifficulty = state.aiDifficulty || null;
+  return state;
 }
 
 export function clearGameState() {
-  localStorage.removeItem(STORAGE_KEYS.GAME_STATE);
+  try {
+    localStorage.removeItem(STORAGE_KEYS.GAME_STATE);
+  } catch (e) {
+    console.warn("Failed to clear game state:", e);
+  }
 }
 
 export function hasSavedGameState() {
-  return localStorage.getItem(STORAGE_KEYS.GAME_STATE) !== null;
+  try {
+    return localStorage.getItem(STORAGE_KEYS.GAME_STATE) !== null;
+  } catch {
+    return false;
+  }
 }
 
 export function clearAllStorage() {
   Object.values(STORAGE_KEYS).forEach((key) => {
-    localStorage.removeItem(key);
+    try {
+      localStorage.removeItem(key);
+    } catch (e) {
+      console.warn("Failed to remove key:", key, e);
+    }
   });
 }
 
 export function savePlayerPreferences(preferences) {
-  localStorage.setItem(
-    STORAGE_KEYS.PLAYER_PREFERENCES,
-    JSON.stringify(preferences)
-  );
+  try {
+    localStorage.setItem(
+      STORAGE_KEYS.PLAYER_PREFERENCES,
+      JSON.stringify(preferences)
+    );
+  } catch (e) {
+    console.warn("Failed to save player preferences:", e);
+  }
 }
 
 export function loadPlayerPreferences() {
-  const saved = localStorage.getItem(STORAGE_KEYS.PLAYER_PREFERENCES);
-  return saved ? JSON.parse(saved) : {};
+  const value = safeParse(
+    localStorage.getItem(STORAGE_KEYS.PLAYER_PREFERENCES),
+    {}
+  );
+  return value && typeof value === "object" && !Array.isArray(value)
+    ? value
+    : {};
 }
 
 export function saveStatistics(stats) {
@@ -102,8 +148,7 @@ export function saveStatistics(stats) {
 }
 
 export function loadStatistics() {
-  const saved = localStorage.getItem(STORAGE_KEYS.STATISTICS);
-  return saved ? JSON.parse(saved) : null;
+  return safeParse(localStorage.getItem(STORAGE_KEYS.STATISTICS), null);
 }
 
 export function saveSessionStats(sessionStats) {
@@ -118,8 +163,7 @@ export function saveSessionStats(sessionStats) {
 }
 
 export function loadSessionStats() {
-  const saved = sessionStorage.getItem(STORAGE_KEYS.SESSION_STATS);
-  return saved ? JSON.parse(saved) : null;
+  return safeParse(sessionStorage.getItem(STORAGE_KEYS.SESSION_STATS), null);
 }
 
 export function saveGameHistory(history) {
@@ -131,10 +175,14 @@ export function saveGameHistory(history) {
 }
 
 export function loadGameHistory() {
-  const saved = localStorage.getItem(STORAGE_KEYS.GAME_HISTORY);
-  return saved ? JSON.parse(saved) : [];
+  const value = safeParse(localStorage.getItem(STORAGE_KEYS.GAME_HISTORY), []);
+  return Array.isArray(value) ? value : [];
 }
 
 export function clearGameHistory() {
-  localStorage.removeItem(STORAGE_KEYS.GAME_HISTORY);
+  try {
+    localStorage.removeItem(STORAGE_KEYS.GAME_HISTORY);
+  } catch (e) {
+    console.warn("Failed to clear game history:", e);
+  }
 }

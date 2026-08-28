@@ -5,16 +5,13 @@
 import {
   getPlayerNames,
   savePlayerNames,
-  getPlayerDisplayName,
-  isValidPlayerName,
+  sanitizePlayerName,
 } from "./playerManager.js";
 
 import {
   loadSoundPreference,
   saveSoundPreference,
-  loadGameState,
   saveGameState,
-  hasSavedGameState,
   clearGameState,
   saveDifficultyPreference,
   loadDifficultyPreference,
@@ -34,17 +31,16 @@ import { sounds } from "./soundManager.js";
 import { checkGameResult, isValidMove } from "./gameLogic.js";
 
 import {
-  updateCurrentPlayerDisplay,
   updateCellUI,
-  displayWinResult,
   displayDrawResult,
   showEndGameButtons,
   hideEndGameButtons,
   switchScreen,
   resetCellsUI,
+  disableAllCells,
   clearStatus,
-  toggleSoundButtonUI,
-  setPlayerNameInputs,
+  syncSoundButtonUI,
+  syncModeControl,
   showPlayerModal,
   hidePlayerModal,
   preparePlayerModalForAI,
@@ -55,79 +51,105 @@ import { statisticsManager } from "./statisticsManager.js";
 import { gameHistoryManager } from "./gameHistoryManager.js";
 import { getAIMove } from "./aiLogic.js";
 
+const HAS_WINNER_CLASS = "has-winner";
+const RESULT_CLASS = "result";
+
 let elements;
 let previousScreen = null;
+let aiMoveTimeoutId = null;
+let gameGeneration = 0;
+
+function cancelPendingAIMove() {
+  if (aiMoveTimeoutId !== null) {
+    clearTimeout(aiMoveTimeoutId);
+    aiMoveTimeoutId = null;
+  }
+  gameGeneration++;
+}
+
+function currentDisplayName() {
+  return gameState.currentPlayer === "X"
+    ? gameState.playerNameX
+    : gameState.playerNameO;
+}
+
+function setTurnDisplay() {
+  elements.currentPlayerDisplay.textContent = currentDisplayName();
+}
 
 function initGame() {
+  cancelPendingAIMove();
   gameState.startGame();
-  const displayName =
-    gameState.currentPlayer === "X"
-      ? gameState.playerNameX
-      : gameState.playerNameO;
-  elements.currentPlayerDisplay.textContent = displayName;
+  setTurnDisplay();
   updateLiveScore();
 
-  if (gameState.gameMode === GAME_MODES.AI) {
-    const difficulty =
-      gameState.aiDifficulty.charAt(0).toUpperCase() +
-      gameState.aiDifficulty.slice(1);
-    elements.modeIndicator.textContent = `AI Mode (${difficulty})`;
-  } else {
-    elements.modeIndicator.textContent = "2 Player Mode";
-  }
+  elements.aiThinking.classList.add(CSS_CLASSES.HIDDEN);
+  elements.gameBoard.classList.remove(CSS_CLASSES.DISABLED);
+  elements.gameBoard.classList.remove(HAS_WINNER_CLASS);
+  elements.gameStatus.classList.remove(RESULT_CLASS);
+
+  const isAi = gameState.gameMode === GAME_MODES.AI;
+  elements.changeDifficultyBtn.classList.toggle(CSS_CLASSES.HIDDEN, !isAi);
+  syncModeControl(elements, gameState);
 }
 
 function handleCellClick(event) {
-  const cell = event.target;
-  const index = parseInt(cell.dataset.index);
-  if (isNaN(index)) {
-    console.warn("Invalid cell index");
-    return;
-  }
-
+  const cell = event.currentTarget;
+  const index = parseInt(cell.dataset.index, 10);
+  if (Number.isNaN(index)) return;
+  if (!gameState.isGameActive) return;
   if (
-    (gameState.gameMode === GAME_MODES.AI &&
-      gameState.currentPlayer === GAME_CONFIG.PLAYERS.O) ||
-    !isValidMove(index)
+    gameState.gameMode === GAME_MODES.AI &&
+    gameState.currentPlayer === GAME_CONFIG.PLAYERS.O
   ) {
     return;
   }
-
+  if (!isValidMove(index)) return;
   makeMove(cell, index);
   const result = checkGameResult();
 
   if (result) {
     handleGameEnd(result);
-  } else {
-    gameState.switchPlayer();
-    const displayName =
-      gameState.currentPlayer === "X"
-        ? gameState.playerNameX
-        : gameState.playerNameO;
-    elements.currentPlayerDisplay.textContent = displayName;
+    return;
+  }
 
-    if (gameState.isAiTurn()) {
-      elements.gameBoard.classList.add(CSS_CLASSES.DISABLED);
-      elements.aiThinking.classList.remove(CSS_CLASSES.HIDDEN);
-      const delay =
-        AI_CONFIG.DELAYS[gameState.aiDifficulty] || AI_CONFIG.DELAYS.easy;
-      setTimeout(triggerAIMove, delay);
-    }
+  gameState.switchPlayer();
+  setTurnDisplay();
 
-    if (gameState.isGameActive) {
-      saveGameState(gameState);
-    }
+  if (gameState.isAiTurn()) {
+    elements.gameBoard.classList.add(CSS_CLASSES.DISABLED);
+    elements.aiThinking.classList.remove(CSS_CLASSES.HIDDEN);
+    const delay =
+      AI_CONFIG.DELAYS[gameState.aiDifficulty] || AI_CONFIG.DELAYS.easy;
+    const scheduledGen = gameGeneration;
+    aiMoveTimeoutId = setTimeout(() => triggerAIMove(scheduledGen), delay);
+  }
+
+  if (gameState.isGameActive) {
+    saveGameState(gameState);
   }
 }
 
-function triggerAIMove() {
-  if (!gameState.isGameActive) {
+function triggerAIMove(scheduledGen) {
+  aiMoveTimeoutId = null;
+  if (scheduledGen !== gameGeneration) return;
+  if (!gameState.isGameActive || !gameState.isAiTurn()) {
     elements.aiThinking.classList.add(CSS_CLASSES.HIDDEN);
+    elements.gameBoard.classList.remove(CSS_CLASSES.DISABLED);
     return;
   }
 
   const moveIndex = getAIMove(gameState.aiDifficulty);
-  if (moveIndex === null) return;
+  elements.aiThinking.classList.add(CSS_CLASSES.HIDDEN);
+  elements.gameBoard.classList.remove(CSS_CLASSES.DISABLED);
+
+  if (
+    moveIndex === null ||
+    moveIndex === undefined ||
+    !isValidMove(moveIndex)
+  ) {
+    return;
+  }
 
   const cell = elements.cells[moveIndex];
   makeMove(cell, moveIndex);
@@ -135,17 +157,11 @@ function triggerAIMove() {
 
   if (result) {
     handleGameEnd(result);
-  } else {
-    gameState.switchPlayer();
-    const displayName =
-      gameState.currentPlayer === "X"
-        ? gameState.playerNameX
-        : gameState.playerNameO;
-    elements.currentPlayerDisplay.textContent = displayName;
+    return;
   }
 
-  elements.gameBoard.classList.remove(CSS_CLASSES.DISABLED);
-  elements.aiThinking.classList.add(CSS_CLASSES.HIDDEN);
+  gameState.switchPlayer();
+  setTurnDisplay();
 
   if (gameState.isGameActive) {
     saveGameState(gameState);
@@ -160,7 +176,12 @@ function makeMove(cell, index) {
 
 function handleGameEnd(result) {
   gameState.endGame();
+  cancelPendingAIMove();
+
   elements.aiThinking.classList.add(CSS_CLASSES.HIDDEN);
+  elements.gameBoard.classList.remove(CSS_CLASSES.DISABLED);
+  disableAllCells(elements.cells);
+  elements.gameStatus.classList.add(RESULT_CLASS);
 
   let gameResult, winner;
 
@@ -168,8 +189,9 @@ function handleGameEnd(result) {
     const winnerName =
       result.player === "X" ? gameState.playerNameX : gameState.playerNameO;
     result.combination.forEach((index) => {
-      elements.cells[index].classList.add("winner");
+      elements.cells[index].classList.add(CSS_CLASSES.WINNER);
     });
+    elements.gameBoard.classList.add(HAS_WINNER_CLASS);
     elements.gameStatus.textContent = `${winnerName} Wins!`;
     sounds.win();
     gameResult = "win";
@@ -202,16 +224,97 @@ function handleGameEnd(result) {
 }
 
 function resetGame() {
+  cancelPendingAIMove();
   gameState.reset();
   resetCellsUI(elements.cells);
   clearStatus(elements);
   hideEndGameButtons(elements);
+  elements.aiThinking.classList.add(CSS_CLASSES.HIDDEN);
+  elements.gameBoard.classList.remove(CSS_CLASSES.DISABLED);
+  elements.gameBoard.classList.remove(HAS_WINNER_CLASS);
   clearGameState();
 }
 
+function beginNewGame() {
+  resetGame();
+  initGame();
+}
+
+const PLACEHOLDER_NAMES = {
+  AI_HUMAN: "Player",
+  COMPUTER: "Computer",
+  TWO_PLAYER_X: "Player X",
+  TWO_PLAYER_O: "Player O",
+};
+
+function isPlaceholderName(name) {
+  return (
+    !name ||
+    name === PLACEHOLDER_NAMES.AI_HUMAN ||
+    name === PLACEHOLDER_NAMES.COMPUTER ||
+    name === PLACEHOLDER_NAMES.TWO_PLAYER_X ||
+    name === PLACEHOLDER_NAMES.TWO_PLAYER_O
+  );
+}
+
+function adaptPlayerNamesToMode(isAi) {
+  if (isAi) {
+    gameState.playerNameX = isPlaceholderName(gameState.playerNameX)
+      ? PLACEHOLDER_NAMES.AI_HUMAN
+      : gameState.playerNameX;
+    gameState.playerNameO = PLACEHOLDER_NAMES.COMPUTER;
+    return;
+  }
+
+  gameState.playerNameX = isPlaceholderName(gameState.playerNameX)
+    ? PLACEHOLDER_NAMES.TWO_PLAYER_X
+    : gameState.playerNameX;
+
+  const stored = getPlayerNames();
+  gameState.playerNameO = isPlaceholderName(stored.O)
+    ? PLACEHOLDER_NAMES.TWO_PLAYER_O
+    : stored.O;
+}
+
+function handleModeSwitch(requestedMode) {
+  const isAi = requestedMode === GAME_MODES.AI;
+  const isTwoPlayer = requestedMode === GAME_MODES.TWO_PLAYER;
+  if (!isAi && !isTwoPlayer) {
+    syncModeControl(elements, gameState);
+    return;
+  }
+  if (requestedMode === gameState.gameMode) return;
+  sounds.click();
+  gameState.setGameMode(requestedMode);
+
+  if (isAi) {
+    gameState.setDifficulty(gameState.aiDifficulty || loadDifficultyPreference());
+  }
+
+  adaptPlayerNamesToMode(isAi);
+  beginNewGame();
+}
+
 function updateLiveScore() {
-  const sessionStats = statisticsManager.getSessionStats();
-  elements.liveSessionScore.textContent = `W: ${sessionStats.sessionWins} | L: ${sessionStats.sessionLosses} | D: ${sessionStats.sessionDraws}`;
+  const s = statisticsManager.getSessionStats();
+  const score = elements.liveSessionScore;
+  score.textContent = "";
+
+  const chips = [
+    ["W", s.sessionWins],
+    ["L", s.sessionLosses],
+    ["D", s.sessionDraws],
+  ];
+
+  for (const [label, value] of chips) {
+    const chip = document.createElement("span");
+    chip.className = "sc";
+    chip.append(`${label} `);
+    const strong = document.createElement("b");
+    strong.textContent = String(value);
+    chip.append(strong);
+    score.append(chip);
+  }
 }
 
 function updateStatisticsDisplay() {
@@ -228,45 +331,56 @@ function updateStatisticsDisplay() {
 
 function updateGameHistoryDisplay() {
   const history = gameHistoryManager.getFormattedHistory();
+  const list = elements.gameHistoryList;
+  list.textContent = "";
 
   if (history.length === 0) {
-    elements.gameHistoryList.innerHTML = `
-      <li class="history-item empty">No games played yet</li>
-    `;
+    const li = document.createElement("li");
+    li.className = "history-item empty";
+    li.textContent = "No games played yet";
+    list.append(li);
     return;
   }
 
-  const historyHTML = history
-    .map(
-      (game) => `
-        <li class="history-item">
-          <span class="history-result">${game.winner}</span>
-          <span class="history-time">${game.date} ${game.time}</span>
-          <span class="history-players">${game.players}</span>
-        </li>
-      `
-    )
-    .join("");
+  for (const game of history) {
+    const li = document.createElement("li");
+    li.className = "history-item";
 
-  elements.gameHistoryList.innerHTML = historyHTML;
+    const result = document.createElement("span");
+    result.className = "history-result";
+    result.textContent = game.winner;
+
+    const time = document.createElement("span");
+    time.className = "history-time";
+    time.textContent = `${game.date} ${game.time}`;
+
+    const players = document.createElement("span");
+    players.className = "history-players";
+    players.textContent = game.players;
+
+    li.append(result, time, players);
+    list.append(li);
+  }
 }
 
 function setupEventListeners() {
   elements.cells.forEach((cell) => {
     cell.addEventListener("click", handleCellClick);
   });
+
   elements.startBtn.addEventListener("click", () => {
     sounds.click();
     previousScreen = elements.startScreen;
     switchScreen(elements.startScreen, elements.modeSelectionScreen);
   });
+
   elements.twoPlayerModeBtn.addEventListener("click", () => {
     sounds.click();
     gameState.setGameMode(GAME_MODES.TWO_PLAYER);
     gameState.aiDifficulty = null;
     preparePlayerModalForTwoPlayer(elements);
     const names = getPlayerNames();
-    setPlayerNameInputs(elements, names);
+    elements.playerXNameInput.value = names.X === "Player X" ? "" : names.X;
     previousScreen = elements.modeSelectionScreen;
     showPlayerModal(elements);
   });
@@ -281,38 +395,22 @@ function setupEventListeners() {
     );
   });
 
-  elements.easyModeBtn.addEventListener("click", () => {
+  const startAIGame = (difficulty) => {
     sounds.click();
-    gameState.setDifficulty("easy");
-    saveDifficultyPreference("easy");
+    gameState.setDifficulty(difficulty);
+    saveDifficultyPreference(difficulty);
     preparePlayerModalForAI(elements);
     const names = getPlayerNames();
     elements.playerXNameInput.value = names.X === "Player X" ? "" : names.X;
     previousScreen = elements.difficultySelectionScreen;
     showPlayerModal(elements);
-  });
+  };
 
-  elements.mediumModeBtn.addEventListener("click", () => {
-    sounds.click();
-    gameState.setDifficulty("medium");
-    saveDifficultyPreference("medium");
-    preparePlayerModalForAI(elements);
-    const names = getPlayerNames();
-    elements.playerXNameInput.value = names.X === "Player X" ? "" : names.X;
-    previousScreen = elements.difficultySelectionScreen;
-    showPlayerModal(elements);
-  });
-
-  elements.hardModeBtn.addEventListener("click", () => {
-    sounds.click();
-    gameState.setDifficulty("hard");
-    saveDifficultyPreference("hard");
-    preparePlayerModalForAI(elements);
-    const names = getPlayerNames();
-    elements.playerXNameInput.value = names.X === "Player X" ? "" : names.X;
-    previousScreen = elements.difficultySelectionScreen;
-    showPlayerModal(elements);
-  });
+  elements.easyModeBtn.addEventListener("click", () => startAIGame("easy"));
+  elements.mediumModeBtn.addEventListener("click", () =>
+    startAIGame("medium")
+  );
+  elements.hardModeBtn.addEventListener("click", () => startAIGame("hard"));
 
   elements.backToModeBtn.addEventListener("click", () => {
     sounds.click();
@@ -324,20 +422,20 @@ function setupEventListeners() {
 
   elements.startGameBtn.addEventListener("click", () => {
     sounds.click();
-    const playerXName = elements.playerXNameInput.value.trim();
-    const playerOName = elements.playerONameInput.value.trim();
+    const rawX = elements.playerXNameInput.value;
+    const rawO = elements.playerONameInput.value;
     if (gameState.gameMode === GAME_MODES.AI) {
-      gameState.playerNameX = playerXName || "Player";
+      gameState.playerNameX = sanitizePlayerName(rawX) || "Player";
       gameState.playerNameO = "Computer";
       savePlayerNames(gameState.playerNameX, "Computer");
     } else {
-      gameState.playerNameX = playerXName || "Player X";
-      gameState.playerNameO = playerOName || "Player O";
+      gameState.playerNameX = sanitizePlayerName(rawX) || "Player X";
+      gameState.playerNameO = sanitizePlayerName(rawO) || "Player O";
       savePlayerNames(gameState.playerNameX, gameState.playerNameO);
     }
     hidePlayerModal(elements);
     switchScreen(previousScreen, elements.gameScreen);
-    initGame();
+    beginNewGame();
   });
 
   elements.skipNamesBtn.addEventListener("click", () => {
@@ -351,13 +449,12 @@ function setupEventListeners() {
     }
     hidePlayerModal(elements);
     switchScreen(previousScreen, elements.gameScreen);
-    initGame();
+    beginNewGame();
   });
 
   elements.playAgainBtn.addEventListener("click", () => {
     sounds.click();
-    resetGame();
-    initGame();
+    beginNewGame();
   });
 
   elements.changeDifficultyBtn.addEventListener("click", () => {
@@ -413,17 +510,17 @@ function setupEventListeners() {
   elements.exportHistoryBtn.addEventListener("click", () => {
     sounds.click();
     const success = gameHistoryManager.downloadHistoryAsJSON();
-    if (success) {
-      alert(MESSAGES.HISTORY_EXPORTED);
-    } else {
-      alert(MESSAGES.EXPORT_ERROR);
-    }
+    alert(success ? MESSAGES.HISTORY_EXPORTED : MESSAGES.EXPORT_ERROR);
+  });
+  
+  elements.modeSwitcher.addEventListener("change", (event) => {
+    handleModeSwitch(event.target.value);
   });
 
   elements.soundToggle.addEventListener("click", () => {
     gameState.toggleSound();
     saveSoundPreference(gameState.soundEnabled);
-    toggleSoundButtonUI(elements.soundToggle);
+    syncSoundButtonUI(elements.soundToggle, gameState.soundEnabled);
     if (gameState.soundEnabled) {
       sounds.click();
     }
@@ -435,17 +532,15 @@ document.addEventListener("DOMContentLoaded", () => {
     elements = getDOMElements();
     validateDOMElements(elements);
     setupEventListeners();
+
     const savedSoundPref = loadSoundPreference();
     gameState.soundEnabled = savedSoundPref;
-    if (!savedSoundPref) {
-      elements.soundToggle.classList.add(CSS_CLASSES.MUTED);
-    }
+    syncSoundButtonUI(elements.soundToggle, savedSoundPref);
+
     const savedDifficulty = loadDifficultyPreference();
     if (savedDifficulty) {
       gameState.setDifficulty(savedDifficulty);
     }
-
-    console.log("✓ Tic Tac Toe v3.2 initialized successfully");
   } catch (error) {
     console.error("Failed to initialize game:", error);
     alert("Failed to load the game. Please refresh the page.");

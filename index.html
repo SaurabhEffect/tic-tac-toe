@@ -2,38 +2,44 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#f4f1ea" />
     <title>Tic Tac Toe</title>
     <link rel="icon" type="image/png" sizes="16x16" href="game.png" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="startScreen" class="screen active">
+    <main id="startScreen" class="screen active" aria-label="Main menu">
       <div class="start-content">
         <h1 class="game-title">Tic Tac Toe</h1>
         <p class="game-subtitle">Classic Strategy Game</p>
-        <button id="startBtn" class="btn-primary">Start Game</button>
-        <button id="statsBtn" class="btn-secondary">Statistics</button>
+        <div class="start-actions">
+          <button id="startBtn" class="btn-primary">Start Game</button>
+          <button id="statsBtn" class="btn-secondary">Statistics</button>
+        </div>
       </div>
-    </div>
+    </main>
 
-    <div id="modeSelectionScreen" class="screen">
-      <div class="mode-selector-container">
-        <h2 class="modal-title">Select Game Mode</h2>
+    <section id="modeSelectionScreen" class="screen" aria-label="Select game mode">
+      <div class="panel">
+        <h2 class="panel-title">Select Game Mode</h2>
         <div class="mode-buttons">
           <button id="twoPlayerModeBtn" class="btn-primary mode-btn">
             2 Players
           </button>
-          <button id="aiModeBtn" class="btn-primary mode-btn">vs AI</button>
+          <button id="aiModeBtn" class="btn-primary mode-btn">vs Computer</button>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div id="statsScreen" class="screen">
+    <section id="statsScreen" class="screen" aria-label="Statistics">
       <div class="stats-container">
         <div class="stats-header">
-          <h1 class="stats-title">Game Statistics</h1>
-          <button id="backToMenuBtn" class="btn-secondary">Back to Menu</button>
+          <h1 class="stats-title">Statistics</h1>
+          <button id="backToMenuBtn" class="btn-secondary">Back</button>
         </div>
         <div class="stats-section">
           <h2 class="section-title">Current Session</h2>
@@ -60,10 +66,10 @@
           </button>
         </div>
         <div class="stats-section">
-          <h2 class="section-title">All-Time Statistics</h2>
+          <h2 class="section-title">All Time</h2>
           <div class="stats-grid">
             <div class="stat-item">
-              <span class="stat-label">Win Percentage</span>
+              <span class="stat-label">Win Rate</span>
               <span id="winPercentage" class="stat-value">0%</span>
             </div>
             <div class="stat-item">
@@ -82,9 +88,9 @@
         </div>
         <div class="stats-section">
           <h2 class="section-title">Recent Games</h2>
-          <div id="gameHistoryList" class="history-list">
-            <p class="no-history">No games played yet</p>
-          </div>
+          <ul id="gameHistoryList" class="history-list">
+            <li class="history-item empty">No games played yet</li>
+          </ul>
           <div class="history-buttons">
             <button id="clearHistoryBtn" class="btn-secondary">
               Clear History
@@ -95,109 +101,170 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div id="difficultySelectionScreen" class="screen">
-      <div class="mode-selector-container">
-        <h2 class="modal-title">Select Difficulty</h2>
+    <section
+      id="difficultySelectionScreen"
+      class="screen"
+      aria-label="Select difficulty"
+    >
+      <div class="panel">
+        <h2 class="panel-title">Select Difficulty</h2>
         <div class="difficulty-buttons">
           <button id="easyModeBtn" class="btn-primary difficulty-btn">
             <span class="difficulty-title">Easy</span>
-            <span class="difficulty-desc">AI plays randomly.</span>
+            <span class="difficulty-desc">Plays random moves.</span>
           </button>
           <button id="mediumModeBtn" class="btn-primary difficulty-btn">
             <span class="difficulty-title">Medium</span>
-            <span class="difficulty-desc">AI blocks wins & plays smart.</span>
+            <span class="difficulty-desc">Blocks your wins and plays to a plan.</span>
           </button>
           <button id="hardModeBtn" class="btn-primary difficulty-btn">
             <span class="difficulty-title">Hard</span>
-            <span class="difficulty-desc"
-              >AI plays a perfect, unbeatable game.</span
-            >
+            <span class="difficulty-desc">Perfect play. Cannot be beaten.</span>
           </button>
         </div>
         <button id="backToModeBtn" class="btn-secondary">Back</button>
       </div>
-    </div>
+    </section>
 
-    <div id="gameScreen" class="screen">
+    <section id="gameScreen" class="screen" aria-label="Game board">
       <div class="game-container">
-        <div class="game-header">
-          <div class="current-player">
-            Current Player: <span id="currentPlayerDisplay">X</span>
-          </div>
+        <header class="game-topbar">
+          <p class="turn-indicator">
+            <span class="turn-label">Turn</span>
+            <span id="currentPlayerDisplay" class="turn-name" aria-live="polite"
+              >X</span
+            >
+          </p>
           <button
             id="soundToggle"
-            class="sound-toggle"
-            aria-label="Toggle Sound"
+            class="icon-btn sound-toggle"
+            aria-label="Turn sound off"
+            aria-pressed="true"
           >
-            <span class="sound-icon">🔊</span>
-          </button>
-        </div>
-        <div id="modeIndicator" class="mode-indicator"></div>
-        <div class="live-score">
-          <div class="score-item">
-            <span class="score-label">Session Score:</span>
-            <span id="liveSessionScore" class="score-value"
-              >W: 0 | L: 0 | D: 0</span
+            <svg
+              class="sound-svg"
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              aria-hidden="true"
+              focusable="false"
             >
+              <path
+                class="sound-body"
+                d="M4 9v6h4l5 4V5L8 9H4z"
+                fill="currentColor"
+              />
+              <path
+                class="sound-wave"
+                d="M15.5 8.5a4 4 0 0 1 0 7"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+              <line
+                class="sound-slash"
+                x1="3.5"
+                y1="3.5"
+                x2="20.5"
+                y2="20.5"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+        </header>
+
+        <div class="scoreboard">
+          <div class="mode-control">
+            <label class="mode-label" for="modeSwitcher">Mode</label>
+            <select id="modeSwitcher" class="mode-select">
+              <option value="2-player">2 Players</option>
+              <option value="ai">vs Computer</option>
+            </select>
+            <span id="difficultyTag" class="difficulty-tag hidden"></span>
+          </div>
+          <span
+            id="liveSessionScore"
+            class="session-score"
+            aria-label="Session score"
+          ></span>
+        </div>
+
+        <div
+          id="gameBoard"
+          class="game-board"
+          role="group"
+          aria-label="Tic Tac Toe board"
+        >
+          <button class="cell" type="button" data-index="0" aria-label="Row 1, column 1, empty"></button>
+          <button class="cell" type="button" data-index="1" aria-label="Row 1, column 2, empty"></button>
+          <button class="cell" type="button" data-index="2" aria-label="Row 1, column 3, empty"></button>
+          <button class="cell" type="button" data-index="3" aria-label="Row 2, column 1, empty"></button>
+          <button class="cell" type="button" data-index="4" aria-label="Row 2, column 2, empty"></button>
+          <button class="cell" type="button" data-index="5" aria-label="Row 2, column 3, empty"></button>
+          <button class="cell" type="button" data-index="6" aria-label="Row 3, column 1, empty"></button>
+          <button class="cell" type="button" data-index="7" aria-label="Row 3, column 2, empty"></button>
+          <button class="cell" type="button" data-index="8" aria-label="Row 3, column 3, empty"></button>
+        </div>
+
+        <p id="gameStatus" class="game-status" role="status" aria-live="polite"></p>
+
+        <div class="action-zone">
+          <p id="aiThinking" class="ai-thinking hidden">
+            <span class="ai-thinking-text">Computer is thinking</span>
+            <span class="ai-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+          </p>
+          <div id="endGameButtons" class="end-game-buttons hidden">
+            <button id="playAgainBtn" class="btn-primary">Play Again</button>
+            <button id="statsBtnGame" class="btn-secondary">Statistics</button>
+            <button id="changeDifficultyBtn" class="btn-secondary">
+              Change AI
+            </button>
           </div>
         </div>
-        <div id="gameBoard" class="game-board">
-          <div class="cell" data-index="0"></div>
-          <div class="cell" data-index="1"></div>
-          <div class="cell" data-index="2"></div>
-          <div class="cell" data-index="3"></div>
-          <div class="cell" data-index="4"></div>
-          <div class="cell" data-index="5"></div>
-          <div class="cell" data-index="6"></div>
-          <div class="cell" data-index="7"></div>
-          <div class="cell" data-index="8"></div>
-        </div>
-        <div id="gameStatus" class="game-status"></div>
-        <div id="aiThinking" class="ai-thinking hidden">
-          🤖 AI is thinking...
-        </div>
-        <div id="endGameButtons" class="end-game-buttons hidden">
-          <button id="playAgainBtn" class="btn-secondary">Play Again</button>
-          <button id="statsBtnGame" class="btn-secondary">Statistics</button>
-          <button id="changeDifficultyBtn" class="btn-secondary">
-            Change AI
-          </button>
-        </div>
+
         <footer class="game-footer">
-          <div class="footer-divider"></div>
-          <div class="footer-content-centered">
-            <p class="made-by">
-              Made with <span class="heart">♥</span> by
-              <span class="author-name">Saurabh</span>
-            </p>
-            <a
-              href="https://github.com/SaurabhEffect/tic-tac-toe"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="github-icon-link"
-              aria-label="GitHub Repository"
+          <p class="made-by">
+            Made by <span class="author-name">Saurabh</span>
+          </p>
+          <a
+            href="https://github.com/SaurabhEffect/tic-tac-toe"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="github-icon-link"
+            aria-label="GitHub repository (opens in a new tab)"
+          >
+            <svg
+              class="github-icon"
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              aria-hidden="true"
+              focusable="false"
             >
-              <svg
-                class="github-icon"
-                viewBox="0 0 24 24"
-                width="24"
-                height="24"
-              >
-                <path
-                  d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-                />
-              </svg>
-            </a>
-          </div>
+              <path
+                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                fill="currentColor"
+              />
+            </svg>
+          </a>
         </footer>
       </div>
-    </div>
+    </section>
 
-    <div id="playerModal" class="player-modal hidden">
+    <div
+      id="playerModal"
+      class="player-modal hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="playerModalTitle"
+    >
       <div class="modal-content">
-        <h2 class="modal-title">Enter Player Names</h2>
+        <h2 id="playerModalTitle" class="panel-title">Enter Player Names</h2>
         <div class="player-input-group">
           <label for="playerXName" class="player-label">
             <span class="player-x-label">Player X</span>
@@ -208,6 +275,7 @@
             class="player-input"
             placeholder="Player X"
             maxlength="20"
+            autocomplete="off"
           />
         </div>
         <div class="player-input-group">
@@ -220,6 +288,7 @@
             class="player-input"
             placeholder="Player O"
             maxlength="20"
+            autocomplete="off"
           />
         </div>
         <div class="modal-buttons">

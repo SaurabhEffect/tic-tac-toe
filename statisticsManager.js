@@ -20,6 +20,27 @@ const DEFAULT_SESSION_STATS = {
   sessionGames: 0,
 };
 
+function toSafeCount(value, fallback = 0) {
+  const n = Number(value);
+  return Number.isFinite(n) && n >= 0 ? Math.floor(n) : fallback;
+}
+
+function sanitizeStats(raw, defaults) {
+  const result = { ...defaults };
+  if (!raw || typeof raw !== "object") return result;
+  for (const key of Object.keys(defaults)) {
+    if (key === "lastWinner") {
+      result.lastWinner =
+        raw.lastWinner === "X" || raw.lastWinner === "O"
+          ? raw.lastWinner
+          : null;
+    } else {
+      result[key] = toSafeCount(raw[key], defaults[key]);
+    }
+  }
+  return result;
+}
+
 export class StatisticsManager {
   constructor() {
     this.allTimeStats = this.loadAllTimeStats();
@@ -27,28 +48,45 @@ export class StatisticsManager {
   }
 
   loadAllTimeStats() {
-    const saved = localStorage.getItem(STATS_STORAGE_KEY);
-    return saved
-      ? { ...DEFAULT_STATS, ...JSON.parse(saved) }
-      : { ...DEFAULT_STATS };
+    try {
+      const saved = localStorage.getItem(STATS_STORAGE_KEY);
+      if (!saved) return { ...DEFAULT_STATS };
+      return sanitizeStats(JSON.parse(saved), DEFAULT_STATS);
+    } catch {
+      return { ...DEFAULT_STATS };
+    }
   }
 
   loadSessionStats() {
-    const saved = sessionStorage.getItem(SESSION_STORAGE_KEY);
-    return saved
-      ? { ...DEFAULT_SESSION_STATS, ...JSON.parse(saved) }
-      : { ...DEFAULT_SESSION_STATS };
+    try {
+      const saved = sessionStorage.getItem(SESSION_STORAGE_KEY);
+      if (!saved) return { ...DEFAULT_SESSION_STATS };
+      return sanitizeStats(JSON.parse(saved), DEFAULT_SESSION_STATS);
+    } catch {
+      return { ...DEFAULT_SESSION_STATS };
+    }
   }
 
   saveAllTimeStats() {
-    localStorage.setItem(STATS_STORAGE_KEY, JSON.stringify(this.allTimeStats));
+    try {
+      localStorage.setItem(
+        STATS_STORAGE_KEY,
+        JSON.stringify(this.allTimeStats)
+      );
+    } catch (e) {
+      console.warn("Failed to save statistics:", e);
+    }
   }
 
   saveSessionStats() {
-    sessionStorage.setItem(
-      SESSION_STORAGE_KEY,
-      JSON.stringify(this.sessionStats)
-    );
+    try {
+      sessionStorage.setItem(
+        SESSION_STORAGE_KEY,
+        JSON.stringify(this.sessionStats)
+      );
+    } catch (e) {
+      console.warn("Failed to save session stats:", e);
+    }
   }
 
   recordGameResult(result, winner, playerX, playerO) {
