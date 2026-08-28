@@ -17,7 +17,6 @@ A feature-rich implementation of the classic Tic Tac Toe game with **Hard AI (Mi
 
 ---
 
-
 ## Installation
 
 1. **Download or clone** the repository
@@ -50,6 +49,8 @@ A feature-rich implementation of the classic Tic Tac Toe game with **Hard AI (Mi
    - Then visit: `http://localhost:8000`
 
 ---
+
+## AI System (Enhanced in v3.2)
 
 ### AI Logic Flow
 
